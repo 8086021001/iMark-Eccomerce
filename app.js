@@ -18,9 +18,9 @@ const adminRoute = require('./routes/admin')
 
 const port = process.env.port || 4000
 
+app.use(express.static(path.join(__dirname , "public")));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-app.use(express.static(path.join(__dirname , "public")));
 
 app.use(cookieParser());
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose;
+const cate = require('./categories')
 
 
 const productSchema = new Schema({
@@ -7,37 +8,36 @@ const productSchema = new Schema({
     type: String,
     required: [true, "Product name is required"]
   },
+  
+  category: {
+     type: mongoose.Schema.Types.ObjectId, 
+     ref: 'category'
+     },
 
-  specs: {
-    category: [{
-      categoryName:{
-            type:String,
-            required: [true, 'product category required']
-        },
-      highlights: {
-        type: String,
-      },
-      price: {
-        type: Number,
-        required: [true, 'Price required']
-      },
-      size: {
-        type: String,
-      },
-      inventory: {
-        type: Number,
-        required: [true, 'Total products available']
-      },
-      images: {
-        type: [String],
-        required: [true, 'Images required']
-      }
-     
-    }]   
-   },
-    description:{
-        type: String
+  highlights:{
+    type:String
+  },
+  price: {
+    type: Number,
+    required: [true, 'Price required']
+  },
+  size: {
+    type: String,
+  },
+  inventory: {
+    type: Number,
+    required: [true, 'Total products available']
+  },
+  description:{
+    type: String
+  },
+  images: [
+    {
+       type: String ,
+       required: true
     }
+  ] ,
+
 })
 
 

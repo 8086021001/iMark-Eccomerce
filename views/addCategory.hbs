@@ -1,0 +1,24 @@
+{{>admin-navbar}}
+
+<main style="margin-top: 58px">
+    <div class="container pt-4">
+        <h2>Add Category</h2>
+        <form class="row row-cols-lg-auto g-3 align-items-center" method="post" action="/admin/category/add">
+            <div class="col-12">
+                <label class="visually-hidden" for="inlineFormInputGroupUsername">Category Name</label>
+                <div class="input-group">
+                    <div class="input-group-text">Name</div>
+                    <input type="text" class="form-control" id="inlineFormInputGroupUsername" name="name" id="name" placeholder="Category "/>
+                </div>
+            </div>
+
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+
+    </div>
+</main>
+
+

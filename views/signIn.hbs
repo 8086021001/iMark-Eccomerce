@@ -19,15 +19,14 @@
                   <label class="form-label" for="form3Example4cg">Password</label>
                   <input type="password" id="Passwordl" class="form-control border" name="password" />
                 </div>
-                <div class="error" style="color: red;"></div>
+                <div class="error" style="color: red;">{{errMessage}}</div>
                 <div class="d-flex justify-content-center">
                   <button type="submit"
                     class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"><a style="color: #ffff;">Sign In</a></button>
                 </div>
 
-                <p class="text-center text-muted mt-5 mb-0">Don't have an account!<a href="/signUp"
+                <p class="text-center text-muted mt-5 mb-0">Don't have an account!<a href="/signup"
                     class="fw-bold text-body"><u>Sign Up </u></a></p>
-               <div class="error" style="color: red;">{{errMessage}}</div>
               </form>
 
             </div>

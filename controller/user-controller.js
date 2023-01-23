@@ -1,6 +1,7 @@
 var user = require('../model/user')
 const axios = require('axios')
 const bcrypt = require('bcrypt')
+const product = require('../model/product')
 
 
 
@@ -22,11 +23,19 @@ const getLanding = (req,res)=>{
     res.render('landing')
 }
 
-const getHome = (req,res)=>{
+const getHome = async(req,res)=>{
     try {
         console.log(req.session.userId)
         if(req.session.userId){
-           res.render('home') 
+          const proData = await product.find({}).populate('category')
+          if(proData.length!=0){
+            proData.forEach((product, index, array)=>{
+            array[index].images = product.images.splice(0,1);
+            })
+            res.render('home',{product:proData}) 
+          }else{
+            res.render('home')
+          }
         }else{
             res.render('signIn')
         }
@@ -38,8 +47,6 @@ const getHome = (req,res)=>{
 }
 
 const logout = (req,res)=>{
-  console.log('HI')
-  req.session.user = null ;
   req.session.userId = null ;
   res.redirect('/signIn');
 }
@@ -49,12 +56,17 @@ const userLogin = async(req,res)=>{
     try {
         console.log(req.body)
         const myuser = await user.find({email: req.body.email})
-        const isVerified = await bcrypt.compare(req.body.password ,myuser[0].password)
-        console.log(isVerified)
-        req.session.userId = myuser[0];
-        // req.session.user.Id = myuser[0]._id;
-        if(myuser.length===1 && isVerified){
+        console.log(myuser)
+        
+        req.session.userId = myuser[0]._id;
+        if(myuser.length == 1 ){
+          let isVerified = await bcrypt.compare(req.body.password, myuser[0].password)
+          if(isVerified){
             res.redirect('/home')
+          }else{
+            res.render('signIn',{errMessage: `Invalid Password`})
+            
+          }  
         }else{
             res.render('signUp',
             {errMessage: `User doesn't exist. Please signUp`},
@@ -69,11 +81,11 @@ const userLogin = async(req,res)=>{
 const userSignUp = async(req,res)=>{
     try {
         let userData = new user(req.body)
-        let myuser =await user.find({email: req.body.email})
+        let myuser =await user.find({$or:[{email: req.body.email},{phone:req.body.phone}]})
         if(myuser.length>=1){
          console.log(myuser)
-           console.log("User email already available")
-           res.render('signup',{errMessage: `Email already exist, try using different email.`})
+           console.log("User already available")
+           res.render('signup',{errMessage: `Email or phone already exist, try using different.`})
        }else{
         req.session.user={
             firstName: req.body.firstName,
@@ -118,6 +130,7 @@ const getOtp = async(req,res)=>{
         console.log('check otp')
         console.log(req.body.otp)
        const otp = req.session.otp
+       console.log(otp);
         if(req.body.otp == otp){
            console.log(req.session.user) 
         try{
@@ -131,7 +144,7 @@ const getOtp = async(req,res)=>{
           }
           
         }else{
-          res.json({
+          res.render("otp",{
             message: 'Invalid OTP'
           })
         }
@@ -144,9 +157,9 @@ const resendOtp =  (req, res, next) => {
     .then((response)=>{
       console.log(response.data)
       if(response.data.return){
-        return res.json({message: "OTP sent successfully"})
+        return res.render({message: "OTP sent successfully"})
       }else{
-        return res.json({message: "Some error occured"})
+        return res.render({message: "Some error occured"})
       }
     })
     .catch((error) => {

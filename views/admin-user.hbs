@@ -10,7 +10,7 @@
       <th>Actions</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="userData" >
     {{#each user}}
     <tr>
       <td>
@@ -27,9 +27,11 @@
         <p class="fw-normal mb-1">{{email}}</p>
       </td>
       <td>
-        <button type="click" class="btn btn-link btn-sm btn-rounded">
-          Block
-        </button>
+        {{#if Action}}
+<button class="btn block btn-success px-5 " id="block" data-url={{_id}}>Block</button>
+        {{else}}
+<button class="btn block btn-danger px-4 " id="block" data-url={{_id}}>Unblock</button>
+        {{/if}}
       </td>
     </tr>
  {{/each}}

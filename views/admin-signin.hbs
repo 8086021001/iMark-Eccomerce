@@ -6,7 +6,7 @@
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Admin Sign In</h2>
 
-              <form onSubmit="return validatelogin()" action="/admin" method="post" id="forml">
+              <form onSubmit="return validatelogin()" action="/admin/login" method="post" id="forml">
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example3cg">Your Email</label>
@@ -20,7 +20,7 @@
                 <div class="error" style="color: red;">{{errMessage}}</div>
                 <div class="d-flex justify-content-center">
                   <button type="submit"
-                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"><a style="color: #ffff;">Sign In</a></button>
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"><a href="/admin" style="color: #ffff;">Sign In</a></button>
                 </div>
               </form>
 

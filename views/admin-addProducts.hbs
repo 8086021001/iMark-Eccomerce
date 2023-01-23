@@ -1,16 +1,15 @@
 {{>admin-navbar}}
 <main style="margin-top: 58px">
     <div class="container pt-4">
-        <form class="form-horizontal">
+        <form action="/admin/products/addProducts" method="post" class="form-horizontal" enctype="multipart/form-data">
             <fieldset>
-
-                <!-- Form Name -->
+               <!-- Form Name -->
                 <legend>ADD PRODUCTS</legend>
 
 
                 <!-- Text input-->
                 <div class="form-group row mt-1">
-                    <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>
+                    <label class="col-md-4 control-label" for="product_name" >PRODUCT NAME</label>
                     <div class="col-md-4">
                         <input id="product_name" name="product_name" placeholder="PRODUCT NAME" class="form-control input-md" required="" type="text">
 
@@ -19,16 +18,20 @@
 
                 <!-- Text input-->
                 <div class="form-group row mt-1">
-                    <label class="col-md-4 control-label" for="product_id">CATEGORY NAME</label>
+                    <label class="col-md-4 control-label" for="category">CATEGORY NAME</label>
                     <div class="col-md-4">
-                        <input id="categoryName" name="categoryName" placeholder="CATEGORY NAME" class="form-control input-md" required="" type="text">
-
+                        <select class="form-select" name="category">
+                            <option value="value" selected>Choose Category</option>
+                            {{#each category}}
+                            <option class="text-success" value="{{_id}}" name="category" >{{name}}</option>
+                            {{/each}}
+                        </select>
                     </div>
                 </div>
 
                 <!-- Text input-->
                 <div class="form-group row mt-1">
-                    <label class="col-md-4 control-label" for="product_name_fr">HIGHLIGHTS</label>
+                    <label class="col-md-4 control-label" for="highlisghts">HIGHLIGHTS</label>
                     <div class="col-md-4">
                         <input id="highlights" name="highlights" placeholder="Product Feature" class="form-control input-md" type="text">
 
@@ -36,7 +39,7 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group row mt-1">
-                    <label class="col-md-4 control-label" for="product_id">PRICE</label>
+                    <label class="col-md-4 control-label" for="price">PRICE</label>
                     <div class="col-md-4">
                         <input id="price" name="price" placeholder="PRODUCR PRICE" class="form-control input-md" required="" type="text">
 
@@ -44,9 +47,9 @@
                 </div>
                 <!-- Text input-->
                 <div class="form-group row mt-1">
-                    <label class="col-md-4 control-label" for="product_weight">PRODUCT SIZE</label>
+                    <label class="col-md-4 control-label" for="product_size">PRODUCT SIZE</label>
                     <div class="col-md-4">
-                        <input id="product_sizet" name="product_size" placeholder="PRODUCT SIZE" class="form-control input-md" type="text">
+                        <input id="product_size" name="product_size" placeholder="PRODUCT SIZE" class="form-control input-md" type="text">
 
                     </div>
                 </div>
@@ -59,20 +62,20 @@
                         <input id="inventory" name="inventory" placeholder="INVENTORY" class="form-control input-md" required="" type="text">
 
                     </div>
-                 </div>
+                </div>
 
 
-                 <!-- Textarea -->
-                 <div class="form-group row mt-1">
+                <!-- Textarea -->
+                <div class="form-group row mt-1">
                     <label class="col-md-4 control-label" for="product_description">PRODUCT DESCRIPTION</label>
                     <div class="col-md-4">
-                        <textarea class="form-control" id="product_description" name="product_description"></textarea>
+                        <textarea class="form-control" id="product_description" name="description"></textarea>
                     </div>
-                 </div>
+                </div>
 
 
-                 <!-- Text input-->
-                 <div class="form-group">
+                <!-- Text input-->
+                <div class="form-group">
                     <div
                         class="col-md-4">
 
@@ -80,40 +83,20 @@
                         <div class="form-group row mt-2">
                             <label class="col-md-4 control-label" for="filebutton">main_image</label>
                             <div class="col-md-4">
-                                <input id="filebutton" name="filebutton" class="input-file" type="file">
+                                <input multiple type="file" id="file " name="file" class="input-file"   >
                             </div>
                         </div>
                         <!-- File Button -->
-                        <div class="form-group row mt-2">
-                            <label class="col-md-4 control-label" for="filebutton">auxiliary_images</label>
-                            <div class="col-md-4">
-                                <input id="filebutton" name="filebutton" class="input-file" type="file">
-                            </div>
-                        </div>
-                        <!-- File Button -->
-                        <div class="form-group row mt-2">
-                            <label class="col-md-4 control-label" for="filebutton">auxiliary_images</label>
-                            <div class="col-md-4">
-                                <input id="filebutton" name="filebutton" class="input-file" type="file">
-                            </div>
-                        </div>
-                        <!-- File Button -->
-                        <div class="form-group row mt-2">
-                            <label class="col-md-4 control-label" for="filebutton">auxiliary_images</label>
-                            <div class="col-md-4">
-                                <input id="filebutton" name="filebutton" class="input-file" type="file">
-                            </div>
-                        </div>
 
 
 
                     </fieldset>
-                                            <!-- Button -->
-                        <div class="form-group text-center mt-3">
-                            <div class="col-md-4">
-                                <button id="singlebutton" name="singlebutton" class="btn btn-primary">Add Product</button>
-                            </div>
+                    <!-- Button -->
+                    <div class="form-group text-center mt-3">
+                        <div class="col-md-4">
+                            <button id="singlebutton" name="singlebutton" class="btn btn-primary">Add Product</button>
                         </div>
+                    </div>
                 </form>
 
             </div>

@@ -1,3 +1,8 @@
+//carousel
+$('.carousel').carousel({
+    interval: 2000
+  })
+
 //signUp
 const form = document.getElementById("form")
 const email = document.getElementById('Email')
@@ -114,7 +119,7 @@ function validatelogin(){
 function resendOtp(){
     const otp = document.querySelector('#otp').value
     var phone = phone.value
-    const url = 'http://localhost:4000/otp/resend'
+    const url = '/otp/resend'
     fetch(url, {
       method: 'post',
       headers: {
@@ -131,3 +136,6 @@ function resendOtp(){
     })
   }
 
+
+
+  
