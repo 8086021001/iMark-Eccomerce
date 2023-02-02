@@ -1,7 +1,10 @@
-var user = require('../model/user')
+const user = require('../model/user')
 const axios = require('axios')
 const bcrypt = require('bcrypt')
 const product = require('../model/product')
+const session = require('express-session')
+const categories = require('../model/categories')
+
 
 
 
@@ -27,12 +30,13 @@ const getHome = async(req,res)=>{
     try {
         console.log(req.session.userId)
         if(req.session.userId){
-          const proData = await product.find({}).populate('category')
+          const proData = await product.find({highlights:{$exists:true,$nin:[""]}}).populate('category')
+          const catData = await categories.find({})
           if(proData.length!=0){
-            proData.forEach((product, index, array)=>{
-            array[index].images = product.images.splice(0,1);
-            })
-            res.render('home',{product:proData}) 
+              proData.forEach((product, index, array)=>{
+                array[index].images = product.images.splice(0,1);
+                })
+                res.render('home',{categories:catData,prod:proData})
           }else{
             res.render('home')
           }
@@ -41,7 +45,6 @@ const getHome = async(req,res)=>{
         }
     } catch (error) {
         console.log(error)
-        return res.render('404')
     }
     
 }
@@ -51,6 +54,55 @@ const logout = (req,res)=>{
   res.redirect('/signIn');
 }
 
+const getShop = async(req,res)=>{
+  try {
+    const prodData = await product.find({}).populate('category')
+    if(prodData.lenth!=0){
+      prodData.forEach((Pro,index,array)=>{
+        array[index].images = Pro.images.splice(0,1);
+      })
+      res.render('shop',{prod:prodData})
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+
+
+}
+
+const getFeatured = async(req,res)=>{
+try {
+  const featName = req.params.highlights
+  console.log(featName)
+  res.render('featured')
+} catch (error) {
+  
+}
+}
+
+
+const getCatProduct = async(req,res)=>{
+  try {
+    
+    const catName = req.params.name
+    let prodData = await product.find({}).populate('category')
+    prodData = prodData.filter((prod)=>{
+      if(prod.category.name == catName){
+        return prod;
+      }
+    })
+    prodData.forEach((Pro,index,array)=>{
+      array[index].images = Pro.images.splice(0,1);
+    })
+    console.log(prodData)
+    res.render('shop',{prod:prodData})
+  } catch (error) {
+    
+  }
+}
+
+
 
 const userLogin = async(req,res)=>{
     try {
@@ -58,9 +110,11 @@ const userLogin = async(req,res)=>{
         const myuser = await user.find({email: req.body.email})
         console.log(myuser)
         
-        req.session.userId = myuser[0]._id;
         if(myuser.length == 1 ){
+          req.session.userId = myuser[0]._id;
+          console.log('Hello')
           let isVerified = await bcrypt.compare(req.body.password, myuser[0].password)
+          console.log(isVerified)
           if(isVerified){
             res.redirect('/home')
           }else{
@@ -72,6 +126,7 @@ const userLogin = async(req,res)=>{
             {errMessage: `User doesn't exist. Please signUp`},
             )
           }
+        
     } catch (error) {
         console.log(error)
         return res.send('404')
@@ -168,9 +223,22 @@ const resendOtp =  (req, res, next) => {
     })
   }
 
+const getViewProduct = async(req,res)=>{
+  try {
+    const proId = req.params._id
+    const prodData = await product.findById(proId).populate('category')
+    // const img = {...prodData.images}
+    res.render('productPage',{prodData})
+  } catch (error) {
+    return res.status(500).send(error)
+  }
+
+}
 
 
 
 
 
-module.exports = {userLogin,userSignUp,getSignin,getSignup,getLanding,getOtp,resendOtp,getHome,logout}
+
+module.exports = {userLogin,userSignUp,getSignin,getSignup,
+  getLanding,getOtp,resendOtp,getHome,logout,getViewProduct,getShop,getCatProduct,getFeatured}

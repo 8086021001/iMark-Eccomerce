@@ -1,0 +1,122 @@
+{{>user-header}}
+
+
+<div class="row m-5">
+  <div class="col-md-8 mb-4 px-5 address-form ">
+    <div class="card mb-4">
+      <div class="card-header py-3">
+        <h5 class="mb-0">Biling details</h5>
+      </div>
+      <div class="card-body address-form-body">
+        <form name="adress-form" id="adress-form" method="post" action="/order/payment">
+          <!-- 2 column grid layout with text inputs for the first and last names -->
+
+          <!-- Text input -->
+          <div class=" form-outline mb-4">
+            <input type="text"  id="housename" name="housename" class=" form-control" />
+            <label class="form-label" for="form7Example3" >House name</label>
+          </div>
+
+          <!-- Text input -->
+          <div class="form-outline mb-4">
+            <input type="text"  id="address" name="address" class="form-control" />
+            <label class="form-label" for="form7Example4"   >Address</label>
+          </div>
+
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <input type="text" id="city" name="city" class="form-control" />
+            <label class="form-label" for="form7Example5"  >City</label>
+          </div>
+
+          <!-- Number input -->
+          <div class="form-outline mb-4">
+            <input type="number"  id="phone" name="phone" class="form-control" />
+            <label class="form-label" for="form7Example6"  >Phone</label>
+          </div>
+                    <!-- Number input -->
+          <div class="form-outline mb-4">
+            <input type="number"  id="zip" name="zip" class="form-control" />
+            <label class="form-label" for="form7Example6"  >Zip</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input type="text" id="state" name="state" class="form-control" />
+            <label class="form-label" for="form7Example5"  >state</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input type="text"  id="country" name="country" class="form-control" />
+            <label class="form-label" for="form7Example5"  >Country</label>
+          </div>
+
+          <!-- Message input -->
+          <div class="form-outline mb-4">
+            <textarea class="form-control" id="message" name="message" rows="4"></textarea>
+            <label class="form-label" for="form7Example7"  >Additional information</label>
+          </div>
+          <div  class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary" >Submit</button>
+            {{!-- <input type="submit" value="Submit"> --}}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-4">
+    <div class="card mb-4">
+      <div class="card-header py-3">
+        <h5 class="mb-0">Summary</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+            Products
+            <span><h5>{{totquant}}</h5></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            Shipping
+            <span>Gratis</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+            <div>
+              <strong>Total amount in ₹</strong>
+              <strong>
+                <p class="mb-0">(including VAT)</p>
+              </strong>
+            </div>
+            <span><strong><h4 class="order-price">{{totprice}}</strong></span>
+          </li>
+        </ul>
+
+        <button type="button" class="btn btn-primary btn-lg btn-block cod-button">
+          COD
+        </button>
+          <button type="button" class="btn btn-primary btn-lg btn-block razorpay-button">
+          RazorPay
+        </button>
+      </div>
+            {{#each add}}
+
+        <section class="adress-details-card-container">
+          
+         <div class="adress-details-card">
+             <input type="radio" id="address" name="address" value="{{_id}}">Use
+              address</input>
+        <h3 class="text-center mt-3">Address</h3>
+        <p>Address: {{address}}</p>
+        <p>City: {{city}}</p>
+        <p>State: {{sate}}</p>
+        <p>Zip Code: {{zip}}</p>
+         </div>
+        </section>
+              {{/each}}
+
+    </div>
+  </div>
+
+</div>
+
+
+{{>user-footer}}

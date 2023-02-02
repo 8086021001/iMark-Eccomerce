@@ -11,9 +11,9 @@
         </nav>
 
         <section style="background-color: #eee;">
-            <div class="container py-5">
+            <div class="container py-5" id="ProdData">
                 {{#each product}}
-                    <div class="row justify-content-center mb-3" id="ProdData">
+                    <div class="row justify-content-center mb-3" >
                         <div class="col-md-12 col-xl-10">
                             <div class="card shadow-0 border rounded-3">
                                 <div class="card-body">
@@ -21,7 +21,7 @@
                                     <div class="row">
                                         <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                                             <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                                                <img src="/{{images}}" class="w-100"/>
+                                                <img  src="/{{images}}" class="w-100"/>
                                                 <a href="#!">
                                                     <div class="hover-overlay">
                                                         <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -52,10 +52,10 @@
                                                 </span>
                                             </div>
                                             <div class="d-flex flex-column mt-4">
-                                                 <a class="btn btn-primary text-white px-4" href="/admin/products/getEdit/{{_id}}">Edit</a>
+                                                 <a href="/admin/products/getEdit/{{_id}}" class="btn btn-primary text-white px-4">Edit</a>
                                             </div>
                                             <div class="d-flex flex-column mt-4">
-                                                <button class="btn btn-primary btn-sm bg-danger delproduct" type="button" name="delproduct" id="delproduct" data-url={{ _id }}>Delete</button>
+                                                <button class="btn btn-primary btn-sm bg-danger delproduct" type="submit" name="delproduct" id="delproduct" data-url={{ _id }}>Delete</button>
                                             </div>
                                         </div>
                                     </div>

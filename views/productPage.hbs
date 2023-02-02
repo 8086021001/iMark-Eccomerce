@@ -1,0 +1,72 @@
+
+{{>user-header}}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid ">
+    <div class="collapse navbar-collapse ml-auto text-cente d-flex justify-content-between" id="navbarNav">
+      <div>
+      </div>
+      <div>
+      <ul class="navbar-nav navbar-center ml-auto text-cente">
+        <li class="nav-item ">
+          <a class="nav-link px-4" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link px-4" href="/shop">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4" href="#">Featured</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  px-4" href="#" tabindex="-1" aria-disabled="true">About</a>
+        </li>
+      </ul>
+      </div>
+      <div>
+      <ul class="nav navbar-nav " >
+      <li><a class="fa fa-shopping-cart fs-5 text-dark mx-4" href="/cart"> cart</a></li>
+      </ul> 
+      </div>
+    </div>
+  </div>
+</nav>
+{{!-- end navbar --}}
+
+
+{{#with prodData}}
+  <div class="container mt-5 mb-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10">          
+            <div class="card">         
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="images p-3">
+                            {{#.}}
+                            <div class="text-center p-4"> <img id="thumb-image" data-imagezoom="true" src="/{{images.[0]}}" width="250" /> </div>
+                            <div class="thumbnail text-center"> <img onclick="change_image(this)" src="/{{images.[0]}}" width="70"> <img onclick="change_image(this)" src="/{{images.[1]}}" width="70"> <img onclick="change_image(this)" src="/{{images.[2]}}" width="70"> <img onclick="change_image(this)" src="/{{images.[3]}}" width="70"> </div>
+                            {{/.}}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="product p-4">
+                            <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand">__iMark__</span>
+                                <h5 class="text-uppercase">{{name}}</h5>
+                                <div class="price d-flex flex-row align-items-center"> <span class="act-price">₹{{price}}</span>
+                                </div>
+                            </div>
+                            <p class="about">{{description}}</p>
+                            <div class="sizes mt-5">
+                                <h6 class="text-uppercase">{{size}}</h6> <label class="radio">
+                            </div>
+                            <div class="cart mt-4 align-items-center">
+                                 <a class="btn btn-danger text-uppercase mr-2 px-4" href="/product/cart/{{_id}}">Add to cart</a> <i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i> </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{{/with}}
+
+{{>user-footer}}

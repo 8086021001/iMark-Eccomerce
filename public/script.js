@@ -1,7 +1,7 @@
 //carousel
-$('.carousel').carousel({
-    interval: 2000
-  })
+// $('.carousel').carousel({
+//     interval: 2000
+//   })
 
 //signUp
 const form = document.getElementById("form")
@@ -11,6 +11,7 @@ const phone = document.getElementById('phone')
 const firstName = document.getElementById('FirstName')
 const lastName = document.getElementById('LastName')
 const otp = document.getElementById('otp')
+const confirm_password = document.getElementById('confirm_password')
 const otpForm = document.getElementById
 console.log(form);
 
@@ -26,11 +27,12 @@ form.addEventListener('submit',(e)=>{
 })
 
 function validate(){
-    var emailValue = email.value.trim();
-    var passwordValue = password.value.trim();
-    var userName = firstName.value.trim();
-    var phoneValue = phone.value.trim()
-    var err = document.querySelector('.error');
+    let emailValue = email.value.trim();
+    let passwordValue = password.value.trim();
+    let confirm_pass = confirm_password.value.trim();
+    let userName = firstName.value.trim();
+    let phoneValue = phone.value.trim()
+    let err = document.querySelector('.error');
 
     console.log(phoneValue)
  
@@ -46,6 +48,12 @@ function validate(){
     }
     if(!passwordValue.match(passwordPattern)){
         text = "Please enter a valid password"
+        err.textContent = text;
+        err.style.height = '4rem';
+        return false;
+    }
+    if(confirm_pass!=passwordValue){
+        text = "Please enter a same password"
         err.textContent = text;
         err.style.height = '4rem';
         return false;

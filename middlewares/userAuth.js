@@ -2,7 +2,6 @@
 
 const userAuthenticated = (req,res,next)=>{
     try {
-        let session = req.session;
         if(req.session.userId){
             next()
         }else{
@@ -11,21 +10,21 @@ const userAuthenticated = (req,res,next)=>{
     } catch (error) {
          res.send('404')
     }
-   
 }
-
-const adminAuthenticated = (req,res,next)=>{
+const userLoggedOut = (req,res,next)=>{
     try {
-        let session =req.session
-        if(req.session.adminId){
+        if(req.session.userId){
             next()
         }else{
-            res.redirect('/')
+            res.redirect('/signin')
         }
-        
     } catch (error) {
-        
+        console.log(error)
     }
 }
+   
 
-module.exports = {userAuthenticated,adminAuthenticated}
+
+
+
+module.exports = {userAuthenticated}

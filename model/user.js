@@ -32,9 +32,91 @@ const userSchema = new Schema({
     Action: {
       type:Boolean,
       default:true
-    }
+    },
+    cart: [
+        {
+           proId: {
+             type: mongoose.Schema.Types.ObjectId ,
+             ref: "product"
+           },
+           quantity: {
+             type: Number
+           },
 
-})
+           increment: {
+            type: Boolean
+          },
+          decrement: {
+            type: Boolean
+          }
+        }
+     ] ,
+     address: [
+         {
+             houseName: {
+               type : String ,
+               required: true
+             } ,
+             address: {
+              type : String ,
+              required: true
+            } ,
+             phone: {
+               type : Number ,
+               required: true
+             },
+             city: {
+               type : String ,
+               required: true
+             } ,
+             zip: {
+               type : String ,
+               required: true
+             },
+             state: {
+               type : String ,
+               required: true
+             },
+             country: {
+               type : String ,
+               required: true
+             },
+             message:{
+              type: String,
+             }
+         }
+     ] 
+
+}
+)
+
+
+
+
+userSchema.methods.addCart =  function(prodId,price) {
+  const cartProductIndex = this.cart.findIndex(cp => {
+    return cp.proId._id.toString() === prodId.toString();
+  });
+
+  // let newQuantity = 1;
+  let updatedCart = [...this.cart]
+  if (cartProductIndex >= 0) {
+    console.log(this.cart[cartProductIndex].quantity)
+    let newQuantity = this.cart[cartProductIndex].quantity + 1;
+    // let newPrice = this.cart[cartProductIndex].quantity * price;
+    updatedCart[cartProductIndex].quantity = newQuantity;
+  } else {
+    this.cart.push({
+      proId: prodId,
+      quantity: 1
+    });
+  }
+  return this.save();
+};
+
+
+
+
 
 userSchema.pre('save', async function(next){
   try {
@@ -45,6 +127,8 @@ userSchema.pre('save', async function(next){
     console.log(error)
   }
 })
+
+
 
 module.exports = mongoose.models.user || mongoose.model("user", userSchema);
 

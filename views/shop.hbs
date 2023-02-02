@@ -1,0 +1,97 @@
+{{>user-header}}
+{{!-- //navbar --}}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid ">
+    <div class="collapse navbar-collapse ml-auto text-cente d-flex justify-content-between" id="navbarNav">
+      <div>
+
+      </div>
+      <div>
+      <ul class="navbar-nav navbar-center ml-auto text-cente">
+        <li class="nav-item ">
+          <a class="nav-link px-4" aria-current="page" href="/home">Home</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link px-4" href="/shop">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4" href="#">Featured</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  px-4" href="#" tabindex="-1" aria-disabled="true">About</a>
+        </li>
+      </ul>
+      </div>
+      <div>
+      <ul class="nav navbar-nav " >
+      <li><a class="fa fa-shopping-cart fs-5 text-dark mx-4" href="/cart"> cart</a></li>
+      </ul> 
+      </div>
+    </div>
+  </div>
+</nav>
+{{!-- navbar end --}}
+
+
+      <!-- inner page section -->
+      <section class="inner_page_head">
+         <div class="container_fuild">
+            <div class="row">
+               <div class="d-flex align-items-center justify-content-center col-md-12 allProducts ">
+                  <div class="full">
+                     <h3 class="glow" >All Products </h3>
+                  </div>
+                       {{!-- <h5>__iMark__ Presents you, the favourite collections for your favourite ones</h5> --}}
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end inner page section -->
+
+            
+      <!-- product section -->
+      <section class="product_section layout_padding">
+         <div class="container">
+            <div class="heading_container heading_center  d-flex justify-content-center">
+               <h2>
+                  Our <span>products</span>
+               </h2>
+            </div>
+            <div>
+            <div class="row d-flex jsutify-content-center">  
+               {{#each prod}}             
+               <div class="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center">
+                              
+                  <div class="box h-100">  
+                     <div class="option_container">
+                        <div class="options">
+                           <a href="/product/view/{{_id}}" class="option2">
+                           Buy Now
+                           </a>
+                        </div>
+                     </div>
+                     <div class="img-box">
+                        <img style="width:25vh;height:40vh" src="/{{images.[0]}}" alt="my image">
+                     </div>
+                     <div class="col detail-box">
+                        <h5>
+                           {{name}}
+                        </h5>
+                        <h6 style="font-size: x-large;">
+                            ₹{{price}}
+                        </h6>
+                     </div>
+                     
+                  </div>
+                  
+               </div>
+                {{/each}}
+            </div>
+           
+         </div>
+         
+         </div>
+      </section>
+
+
+{{>user-footer}}

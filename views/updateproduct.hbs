@@ -2,18 +2,16 @@
 
 <main style="margin-top: 58px">
     <div class="container pt-4">
-        <form  name="editProduct" id="editProduct" class="form-horizontal" enctype="multipart/form-data">
-            {{#with prodData}}
+        <form  name="editProduct" id="editProduct" class="form-horizontal mb-5" enctype="multipart/form-data">
+
                 <fieldset>
                     <!-- Form Name -->
                     <h1>Edit Product</h1>
-
-
                     <!-- Text input-->
                     <div class="form-group row mt-1">
-                        <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>
+                        <label class="col-md-4 control-label"  for="product_name" >PRODUCT NAME</label>
                         <div class="col-md-4">
-                            <input id="product_name" name="product_name" value="{{ name }}" class="form-control input-md" required="" type="text"></div>
+                            <input id="product_name" name="product_name" value="{{prodData.name}}" class="form-control input-md" required type="text"></div>
                         </div>
 
                         <!-- Text input-->
@@ -21,31 +19,30 @@
                             <label class="col-md-4 control-label" for="category">CATEGORY NAME</label>
                             <div class="col-md-4">
                                 <select class="form-select" name="category">
-                                    <option value="value" selected>{{ this.category.name }}</option>
-                                    {{#each category}}
-                                        <option class="text-success" name="category">{{this.name }}</option>
+                                    <option value="value" value="{{_id}}" id="category" selected>{{ prodData.category.name }}</option>
+                                    {{#each Category}}
+                                        <option class="text-success" required >{{name}}</option>
                                     {{/each}}
                                 </select>
                             </div>
                         </div>
-
                         <!-- Text input-->
                         <div class="form-group row mt-1">
                             <label class="col-md-4 control-label" for="highlisghts">HIGHLIGHTS</label>
                             <div class="col-md-4">
-                                <input id="highlights" value="{{ highlights }}" name="highlights" placeholder="Product Feature" class="form-control input-md" type="text"></div>
+                                <input id="highlights" value="{{ prodData.highlights }}" name="highlights" placeholder="Product Feature" class="form-control input-md" type="text" required></div>
                             </div>
                             <!-- Text input-->
                             <div class="form-group row mt-1">
                                 <label class="col-md-4 control-label" for="price">PRICE</label>
                                 <div class="col-md-4">
-                                    <input id="price" name="price" value="{{ price }}" placeholder="PRODUCR PRICE" class="form-control input-md" required="" type="text"></div>
+                                    <input id="price" name="price" value="{{ prodData.price }}" placeholder="PRODUCR PRICE" class="form-control input-md" required type="text"></div>
                                 </div>
                                 <!-- Text input-->
                                 <div class="form-group row mt-1">
                                     <label class="col-md-4 control-label" for="product_size">PRODUCT SIZE</label>
                                     <div class="col-md-4">
-                                        <input id="product_size" value="{{ size }}" name="product_size" placeholder="PRODUCT SIZE" class="form-control input-md" type="text"></div>
+                                        <input id="product_size" value="{{ prodData.size }}" name="product_size" placeholder="PRODUCT SIZE" class="form-control input-md" type="text" required></div>
                                     </div>
 
 
@@ -53,7 +50,7 @@
                                     <div class="form-group row mt-1">
                                         <label class="col-md-4 control-label" for="available_quantity">INVENTORY</label>
                                         <div class="col-md-4">
-                                            <input id="inventory" value="{{ inventory }}" name="inventory" placeholder="INVENTORY" class="form-control input-md" required="" type="text"></div>
+                                            <input id="inventory" value="{{ prodData.inventory }}" name="inventory" placeholder="INVENTORY" class="form-control input-md" required type="text"></div>
                                         </div>
 
 
@@ -61,38 +58,41 @@
                                         <div class="form-group row mt-1">
                                             <label class="col-md-4 control-label" for="product_description">PRODUCT DESCRIPTION</label>
                                             <div class="col-md-4">
-                                                <textarea aria-valuetext="{{ description }}" class="form-control" id="product_description" name="description">{{ description }}</textarea>
+                                                <textarea value="{{prodData.description}}" class="form-control" id="product_description" name="description">{{ prodData.description }}</textarea>
                                             </div>
                                         </div>
 
 
                                         <!-- Text input-->
-                                        <div class="form-group">
+                                        <div class="form-group container">
                                             <div
-                                                class="col-md-4">
+                                                class="col-md-4 row">
 
                                                 <!-- File Button -->
-
-                                                <div class="form-group row mt-2">
+                                                        {{#each objects}}
+                                                <div class="d-flex justify-content-center form-group row mt-2 image-class">
+                                                    
                                                     <label class="col-md-4 control-label" for="filebutton">main_image</label>
-                                                    {{#each images}}
+                                                    
                                                     <div class="container row md-4 ">
-                                                        <input multiple type="file" id="file " name="file" value="/{{ this }}" class="input-file"></div>     
+                                                        <input multiple type="file" id="file" name="file" value="/{{this.image}}" class="input-file" value="invisible">
+                                                        </div>     
                                                             <div class="card" style="width: 12rem;">
-                                                                <img class="card-img-top" src="/{{ this }}" alt="Card image cap"></div>
-                                                            {{/each}}
-
+                                                                <img class="card-img-top"  src="/{{this.image}}" value="/{{this.image}}" alt="Card image cap">
+                                                                </div>
                                                         </div>
+                                                        {{/each}}
                                                         <!-- File Button -->
 
                                                     </fieldset>
                                                     <!-- Button -->
                                                     <div class="form-group text-center mt-3">
                                                         <div class="col-md-4">
-                                                            <button onclick="delProduct({{_id}})" id="singlebutton" name="singlebutton" class="btn btn-primary" data-url={{_id}}>Update</button>
+                                                            <button type="button"  id="singlebutton" name="singlebutton" class="btn btn-primary Update-prod" data-url={{prodData._id}}>Update</button>
+                                                            <div class="error" style="color: red;">{{errMessage}}</div>
+
                                                         </div>
                                                     </div>
-                                                {{/with}}
 
                                             </form>
 

@@ -1,11 +1,11 @@
 <nav
-    class="navbar navbar-expand-lg bg-primary navbar-dark navbar-fixed-top ">
+    class="navbar navbar-expand-lg bg-primary navbar-dark navbar-fixed-top pt-2 ">
     <!-- Container wrapper -->
     <div
         class="container-fluid">
 
         <!-- Navbar brand -->
-        <a class="navbar-brand" href="#" style="font-weight: 800;">__iMark__</a>
+        <a class="navbar-brand" href="#" style="font-weight: 900;">__iMark__</a>
 
         <!-- Toggle button -->
         <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,22 +18,18 @@
 
             <!-- Icons -->
             <ul class="navbar-nav d-flex flex-row me-1">
-                <li class="nav-item me-3 me-lg-0">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-shopping-cart"></i>
-                    </a>
-                </li>
                 <li class="nav-item me-3 me-lg-0 ">
-                    <a class="nav-link dropdown " data-toggle="dropdown" href="#">
-                        <i class='fa fa-user dropdown'></i>
-                    </a>
+                    <div class="dropdown mx-4 ">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user"></i>
+                        </button>
+                        <div class="dropdown-menu px-0" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item " href="#">profile</a>
+                            <a class="dropdown-item " href="/logout">Logout</a>
+                        </div>
+                    </div>
                 </li>
-
-            <!-- Search -->
-            <form class="w-auto">
-                <input type="search" class="form-control" placeholder="Search..." aria-label="Search"></form>
-
+            </div>
         </div>
-    </div>
-    <!-- Container wrapper -->
-</nav>
+        <!-- Container wrapper -->
+    </nav>

@@ -11,6 +11,8 @@ const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const adminRoute = require('./routes/admin')
+const orderRoute = require('./routes/order')
+
 
 
 
@@ -62,6 +64,7 @@ app.engine('hbs', hbs.engine({
 //routes
 app.use("/",UserRoute);
 app.use("/admin",adminRoute);
+app.use("/",orderRoute)
 
 
 
