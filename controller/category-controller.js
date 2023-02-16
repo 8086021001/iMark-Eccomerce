@@ -1,10 +1,10 @@
 const category = require('../model/categories')
 
 
+
 const getCategory = async (req, res) => {
   try {
       const catData = await category.find({})
-      console.log(catData)
       res.render('category', {category: catData})
   } catch (error) {
       return res.status(500).send(error)
@@ -14,14 +14,12 @@ const getCategory = async (req, res) => {
 const getAddCategories = (req, res) => {
   const message = req.session.message
   req.session.message = null
-  res.render('addCategory',{ssage:message})
+  res.render('addCategory',{message:message})
 }
 
 //ADD categories
 const addCategory = async (req, res) =>{
   try {
-    console.log('Hi')
-    console.log(req.body.name)
     const existing = await category.find({name: req.body.name})
     let images = []
     for(key in req.files){
@@ -29,29 +27,22 @@ const addCategory = async (req, res) =>{
       const path = imPath.substring(imPath.lastIndexOf("\\")-8);
       images.push(path);
     }
-    console.log(existing)
-
     if(existing[0]==null){
-      console.log("Hiiiiii")
-      if(images.length==1){
-        console.log(images)
+      if(images.length==1 && req.body.name){
 
         let Category = new category({
           name:req.body.name,
           images:images
         })
-        console.log('in category')
         await Category.save();
         res.redirect('/admin/category')
       }else{
-        console.log("Hiiiiii")
         req.session.message = "Invalid entry"
         res.redirect('/admin/addCategories')
       }
 
     }else{
-      console.log('Hyyywyw')
-      req.session.message = "Invalid entry"
+      req.session.message = "Invalid entry, category already exists"
       res.redirect('/admin/addCategories')
 
     }
@@ -65,8 +56,6 @@ const deleteCategory = async (req, res) =>{
   console.log('delete Category')
       const id = req.params._id
       const user = await category.findById(id)
-      console.log(id)
-      console.log(user) 
 
     try{
     await category.findByIdAndRemove(id)
@@ -85,6 +74,8 @@ const deleteCategory = async (req, res) =>{
   }    
 
   }
+
+  //apply offer for categories in its schema by admin using nodejs,mongoDB html bootstrap and JS
 
 
   module.exports = {getCategory,getAddCategories,addCategory,deleteCategory}

@@ -1,0 +1,92 @@
+{{>admin-navbar}}
+
+<main style="margin-top: 58px">
+    <div class="container pt-4">
+
+
+
+        
+    <div class="container">
+
+        <h1> Order Details Table</h1>
+
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    
+                    <th scope="col">Customer Name</th> 
+                    <th scope="col">Address</th>
+                    <th scope="col">Payment metod</th>
+                    <th scope="col">Order Date</th> 
+                    <th scope="col">Order Status</th> 
+                    <th scope="col">Return Approval Status</th> 
+                </tr> 
+            </thead > 
+
+            <!-- Populate table with data --> 
+
+            <!-- Example row --> 
+            {{#if order}}
+            {{#each order}}
+
+            <tr > 
+
+
+
+                <!-- Customer Name --> 
+
+                <td >{{user.firstName}} {{user.lastName}} </td > 
+                <!-- Address --> 
+                <td>{{shippingInfo.houseName}},{{shippingInfo.city}}<br>{{shippingInfo.state}},{{shippingInfo.country}}<br>{{shippingInfo.phone}}</td>
+
+
+                <td>{{paymentMode}}</td> 
+
+                <!-- Order Date -->  
+
+                <td class="Orderdate">{{createdAt}} </td >  
+
+                <!-- Order Status -->  
+
+                <td ><div class="form-group">
+                    <label for="exampleFormControlSelect1">Status</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option selected>{{#if isShipped}}<p>Shipped</p>{{else}}<p>{{orderStatus}}</p>{{/if}}</option>
+                        <option id="placed">Placed</option>
+                        <option id="confirmed">Confirmed</option>
+                        <option id="shipped">Shipped</option>
+                        <option id="arivingToday">Arriving Today</option>
+                    </select>
+                    </div> 
+                </td >  
+
+                <!-- Return Approval Status -->  
+
+                <td >
+                <a href="/admin/viewOrder/{{_id}}" class="text-primary">view Order<i class="fa fa-eye" aria-hidden="true"></i></a><br>
+                <button type = "button" class = "btn btn-success btn-sm " > Procesed </button>
+                <button type = "button" class = "btn btn-success btn-sm deliver" id="deliver" data-url={{_id}} > Deliver </button>
+                <button type = "button" class = "btn btn-primary btn-sm return" id="ApproveReturn" data-url={{_id}} >Approve Return </button>
+                <p>Order returned </p>
+
+                </td > 
+            </tr > 
+            {{/each}} 
+            {{else}}
+            <div>
+                <h1>No order Data</h1>
+            </div>
+            {{/if}}																	    
+
+        </table >  
+
+    </div>
+
+
+
+
+    </div>
+
+</main>
+
+<script src="/order.js"></script>

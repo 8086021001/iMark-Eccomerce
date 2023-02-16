@@ -35,7 +35,7 @@ const orderSchema = new Schema({
     },
     orderItems: [
         {
-            id: {
+            proId: {
                 type: mongoose.SchemaTypes.ObjectId,
                 ref: "product"
             },
@@ -56,6 +56,18 @@ const orderSchema = new Schema({
         type: Boolean,
         default: false
     },
+    orderStatus:{
+        type:String,
+        default:"placed"
+    },
+    inReturn:{
+        type:Boolean,
+        default:false,
+    },
+    isShipped:{
+        type:Boolean,
+        default:false
+    },
     isCancelled: {
         type: Boolean,
         default: false
@@ -66,6 +78,11 @@ const orderSchema = new Schema({
     },
     deliveredAt: {
         type: Date
+    },
+    returned:
+    {
+        type:Boolean,
+        default:false
     }
 
 })

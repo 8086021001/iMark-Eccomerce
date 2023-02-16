@@ -1,9 +1,71 @@
-
 {{>admin-navbar}}
 
 <main style="margin-top: 58px">
-            <div class="container pt-4"> 
-                
+    <div class="container pt-4">
+
+
+        <div class="row">
+            <div class="col-md-12 card-group m-2">
+                <div class="card m-3">
+                    <h5 class="card-header">Users</h5>
+                    <div class="card-body">
+                        <p class="card-text">Total users:
+                            {{userCount}}</p>
+                        <a href="/admin/users" class="btn btn-primary">Go</a>
+                    </div>
+
+                </div>
+                <div class="card m-3">
+                    <h5 class="card-header">Products</h5>
+                    <div class="card-body">
+                        <p class="card-text">products Available:
+                            {{productCount}}</p>
+                        <a href="/admin/products" class="btn btn-primary">Go</a>
+                    </div>
+
+                </div>
+                <div class="card m-3">
+                    <h5 class="card-header">Customise page</h5>
+                    <div class="card-body">
+                        <p class="card-text">Customise web page</p>
+                        <a href="/admin/update/banner" class="btn btn-primary">Go</a>
+                    </div>
+
+                </div>
 
             </div>
+        </div>
+
+    <div class="row">
+    <div class="col-md-8 m-5">
+        <div>
+            <h5>Per day sales</h5>
+        </div>
+            <canvas id="myChart"></canvas>
+    </div>
+    <div class="col-md-2" >
+        <a href="/admin/downloadSalesReport" style="margin-top: 50VH;" class="btn btn-primary" role="button">Download PDF</a>
+        <a href="/admin/downloadPerdaySalesExcel" style="margin-top: 5VH;" class="btn btn-primary" role="button">Download Excel</a>
+
+    </div>
+    </div>
+    
+        <div class="m-5">
+            <h5>Per product sales</h5>
+        </div>
+    <div class="row">
+        <div class="col-md-7 m-5">
+            <canvas id="myPieChart"></canvas>
+        </div>
+        <div class="col-md-2" >
+        <a href="/admin/downloadProductSalesReport" style="margin-top: 25VH;" class="btn btn-primary" role="button">Download PDF</a>
+        <a href="/admin/downloadProductSalesExcel" style="margin-top: 5VH;" class="btn btn-primary" role="button">Download Excel</a>
+
+        </div>
+
+
+    </div>
 </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="/chart.js"></script>

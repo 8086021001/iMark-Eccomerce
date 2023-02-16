@@ -59,34 +59,47 @@
   </div>
 
   <!-- Inner -->
+  {{#if bannerData}}
   <div class="carousel-inner">
     <!-- Single item -->
     <div class="carousel-item active">
-      <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(15).webp" class="d-block w-100" alt="Sunset Over the City"/>
+      <img src="http://localhost:4000/products/{{bannerData.[0].images.[0]}}" class="d-block w-100" alt="next"/>
       <div class="carousel-caption d-none d-md-block">
-        <h5>__iMark__</h5>
-        <p>Preserve the beauty of your prized possessions.</p>
+        <h2>__iMark__</h2>
+        <p>{{bannerData.[0].caption}}</p>
       </div>
     </div>
 
     <!-- Single item -->
     <div class="carousel-item">
-      <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp" class="d-block w-100" alt="Canyon at Nigh"/>
+      <img src='http://localhost:4000/products/{{bannerData.[0].images.[1]}}' class="d-block w-100" alt="next"/>
       <div class="carousel-caption d-none d-md-block">
-        <h5>__iMark__ </h5>
-        <p>Preserve the beauty of your prized possessions.</p>
+        <h2>__iMark__ </h2>
+        <p>{{bannerData.[0].caption}}</p>
       </div>
     </div>
 
     <!-- Single item -->
     <div class="carousel-item">
-      <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(23).webp" class="d-block w-100" alt="Cliff Above a Stormy Sea"/>
+      <img src='http://localhost:4000/products/{{bannerData.[0].images.[2]}}' class="d-block w-100" alt="next"/>
       <div class="carousel-caption d-none d-md-block">
-        <h5>__iMark__</h5>
-        <p>Preserve the beauty of your prized possessions.</p>
+        <h2>__iMark__</h2>
+        <p>{{bannerData.[0].caption}}</p>
       </div>
     </div>
   </div>
+  {{else}}
+  <div>
+        <div class="carousel-item">
+      <img src='https://media.istockphoto.com/id/1199494844/vector/404-connection-error-banner-with-people-flat-vector-illustration-isolated.jpg?s=1024x1024&w=is&k=20&c=WL2O0hvzEBwWqwQer8PHpq9E9ipbUqAvm8xIuUb8-nk=' class="d-block w-100" alt="next"/>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>__iMark__</h2>
+        <p>Oops! We are On maintenance</p>
+      </div>
+    </div>
+
+  </div>
+  {{/if}}
   <!-- Inner -->
 
   <!-- Controls -->
@@ -107,7 +120,8 @@
 <section class="banner">    
     
 </section>
-          <!-- Start Categories of The Month -->
+{{!-- categories filteration --}}
+{{#if categories}}
     <section class="container py-5">
       <div class="row text-center pt-3">
           <div class="col-lg-6 m-auto">
@@ -119,17 +133,33 @@
           </div>
       </div>
       <div class="d-flex justify-content-center row container-fluid">
+        
           {{#each categories}}
-          <div class="text-center row col-12 col-md-4 p-5 mt-3">
-              <a href="/shop/{{name}}"><img src="{{images}}" class="img-fluid border" style="width:50vh;height:30vh"></a>
+          <div class="card rounded border shadow-lg text-center row col-12 col-md-3 p-2 mt-3 mx-3">
+              <a href="/shop/{{name}}"><img src="{{images}}" class="img-fluid border border-primary shadow" style="width:50vh;height:30vh"></a>
+              {{#if offer}}
+              <p><span class="badge bg-dark ms-2">{{offer}} % off on this category</span></p>
+              {{else}}
+              <p><span class="badge bg-dark ms-2"></span></p>
+              {{/if}}
               <h5 class="text-center mt-3 mb-3">{{name}}</h5>
               <p class="text-center"><a href="/shop/{{name}}" class="btn btn-success">Go Shop</a></p>
+
            </div>
           {{/each}}
-
+  
       </div>
 
     </section>
+    {{else}}
+          <div class="text-center row col-md-12 p-5 mt-3" >
+            <h2>No Categories available for now </h2>
+            <div>
+            <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_zxoyy9k2.json"  background="transparent"  speed="0.5"  style="width: 600px; height: 450px;"  loop autoplay></lottie-player>
+          </div>
+          </div>
+    {{/if}}
+
 
   
     <!-- Start Featured Product -->
@@ -146,14 +176,15 @@
             </div>
       <div class="text-center">
       <div class="row d-flex justify-content-center ">
+        {{#if prod}}
             {{#each prod}}
       <div class="col-auto mb-3 col-lg-3 col-md-5 mx-4 mt-4 ">
         <div class="card h-100 ">
           <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
             data-mdb-ripple-color="light">
-            <img class="card-img-top" style="width:31vh;height:28vh" src="/{{images}}"
+            <img class="card-img-top border shadow-lg" style="width:31vh;height:28vh" src="/{{images}}"
               class="w-100" />
-            <a href="/featured/{{highlights}}">
+            <a href="/product/view/{{_id}}">
               <div class="mask">
                 <div class="d-flex justify-content-start align-items-end h-100">
                   <h5><span class="badge bg-dark ms-2">{{highlights}}</span></h5>
@@ -165,10 +196,11 @@
             </a>
           </div>
           <div class="card-body">
-            <a href="/featured/{{highlights}}" class="text-reset">
+            <a href="/product/view/{{_id}}" class="text-reset">
               <h5 class="card-title mb-2">{{name}}</h5>
             </a>
-            <a href="" class="text-reset ">
+            <a href="/shop/{{name}}" class="text-reset ">
+             
               <p>{{category.name}}</p>
             </a>
             <h6 class="mb-3 price">₹{{price}}</h6>
@@ -176,10 +208,19 @@
         </div>
       </div>
       {{/each}}
+      {{else}}
+      <div >
+        <h2>Soon launching precious products for You!</h2>
+        <div class="d-flex justify-content-center">
+            <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_2frpohrv.json"  background="transparent"  speed="0.5"  style="width: 600px; height: 450px;"  loop autoplay></lottie-player>
+        </div>
+      </div>
+      {{/if}}
         </div>
     </section>
 
 {{!-- pagination --}}
+{{#if categories}}
 <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
   <ul class="pagination">
     <li class="page-item disabled">
@@ -197,9 +238,10 @@
   </ul>
 </nav>  
 
-            <div class="btn-box d-flex justify-content-center">
-               <a href="/shop"><button type="button" class="btn btn-dark">View All products</button>   
-               </a>
-            </div>
+ <div class="btn-box d-flex justify-content-center">
+    <a href="/shop"><button type="button" class="btn btn-dark">View All products</button>   
+    </a>
+ </div>
+ {{/if}}
 
 {{>user-footer}}

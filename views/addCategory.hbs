@@ -3,12 +3,12 @@
 <main style="margin-top: 58px">
     <div class="container pt-4">
         <h2>Add Category</h2>
-        <form class="row row-cols-lg-auto g-3 align-items-center" method="post" action="/admin/category/add" enctype="multipart/form-data">
+        <form class="row row-cols-lg-auto g-3 catform" method="post" action="/admin/category/add" enctype="multipart/form-data">
             <div class="col-12">
                 <label class="visually-hidden" for="inlineFormInputGroupUsername">Category Name</label>
                 <div class="input-group">
                     <div class="input-group-text" >Name</div>
-                    <input type="text" class="form-control" id="inlineFormInputGroupUsername" name="name" id="name" placeholder="Category "/>
+                    <input type="text" class="form-control"  name="name" id="Catname" placeholder="Category "/>
                 </div>
                 <!-- File Button -->
                 <div class="form-group row mt-2">
@@ -19,33 +19,13 @@
                     <!-- File Button -->
 
                 </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary" id="liveToastBtn">Add</button>
-                    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                            <div class="toast-header">
-                                <img src="#" class="rounded me-2" alt="#">
-                                    <strong class="me-auto">Oops</strong>
-                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                </div>
-                                <div class="toast-body">
-                                    {{message}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
 
+                </form>
+                <div id="errormessage" style="display: none;"><p style="color: red;">{{message}}</p></div>
             </div>
         </main>
-        <script>
-            const toastTrigger = document.getElementById('liveToastBtn')
-            const toastLiveExample = document.getElementById('liveToast')
-            if (toastTrigger) {
-                toastTrigger.addEventListener('click', () => {
-                    const toast = new bootstrap.Toast(toastLiveExample)
 
-                    toast.show()
-                })
-            }
-        </script>
+ <script src="/category.js"></script>

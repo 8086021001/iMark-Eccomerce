@@ -31,6 +31,14 @@ const productSchema = new Schema({
   description:{
     type: String
   },
+  isActive:{
+    type:Boolean,
+    default:true
+  },
+  Poffer:{
+    type:Number,
+    default:0
+  },
   images: [
     {
        type: String ,

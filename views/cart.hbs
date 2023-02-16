@@ -33,11 +33,14 @@
     <div class="container py-5">
       <div class="row d-flex justify-content-center my-4">
         <div class="col-md-8">
-          
+                    {{#if message}}
+                   <div id="errormessagecart" style="display: none;"><p style="color: red;">{{message}}</p></div>
+                    {{/if}}
           <div class="card cart-items-container mb-4">
             <div>
               <h5>Cart</h5>
             </div>
+            {{#if prod}}
             {{#each prod}}
             <div class="card-header py-3">
               <h5 class="mb-0"></h5>
@@ -71,18 +74,18 @@
                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                   <!-- Quantity -->
                   <div class="d-flex mb-4" style="max-width: 300px">
-                    <button class="btn btn-primary px-3 me-2 quantity-up" data-url="{{proId._id}}">
-                      <i class="fa fa-plus"></i>
-                    </button>
-  
-                    <div class="form-outline">
-                      <input id="form1" min="0" name="quantity" value="{{quantity}}" type="number" class="form-control" />
-                      <label class="form-label" for="form1">{{TotProPrice}}</label>
-                    </div>
-  
                     <button class="btn btn-primary px-3 ms-2 quantity-down" data-url="{{proId._id}}">
                       <i class="fa fa-minus"></i>
                     </button>
+
+                    <div class="form-outline">
+                      <input id="form1" min= '0' name="quantity" id="Productquantity" value="{{quantity}}" type="number"  class="form-control" />
+                      <label class="form-label" for="form1">{{TotProPrice}}</label>
+                    </div>
+                    <button class="btn btn-primary px-3 me-2 quantity-up" data-url="{{proId._id}}">
+                      <i class="fa fa-plus"></i>
+                    </button>
+
                   </div>
                   <!-- Quantity -->
   
@@ -97,17 +100,23 @@
               <hr class="my-4" />   
             </div>
            {{/each}} 
+
+          {{else}}
+          <div>
+            <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_dkc8tvbm.json"  background="transparent"  speed="0.5"  style="width: 600px; height: 450px;"  loop autoplay></lottie-player>
+          </div>
+          {{/if}}
           </div>
           
           <div class="card mb-4 mb-lg-0">
             <div class="card-body">
               <p><strong>We accept</strong></p>
               <img class="me-2" width="45px"
-                src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                alt="Visa" />
+                src="https://uploads-ssl.webflow.com/60072f00f7a178f0b2c7fa0c/6038aae3530f4adac106f555_1896px-Razorpay_logo.svg-p-1080.png"
+                alt="Razorpay" />
               <img class="me-2" width="45px"
-                src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-                alt="Mastercard" />
+                src="https://th.bing.com/th/id/OIP.xgPnXnivbGI13VC1Lv76AwHaEK?pid=ImgDet&rs=1"
+                alt="PayPal" />
             </div>
           </div>
         </div>
@@ -149,6 +158,7 @@
   </section>
 
 
+        <script src="/cart.js"></script>
 
 
 {{>user-footer}}

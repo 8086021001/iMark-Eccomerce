@@ -1,0 +1,52 @@
+{{>admin-navbar}}
+
+<main style="margin-top: 58px">
+    <div class="container pt-4">
+        <h2>Add Banner images and captions</h2>
+        <form class="row row-cols-lg-auto g-3" method="post" action="/admin/bannerControl" enctype="multipart/form-data">
+            <div class="col-12">
+                <label class="visually-hidden" for="inlineFormInputGroupUsername"> Text</label>
+                <div class="input-group">
+                    <div class="input-group-text" >Caption</div>
+                    <input type="text" class="form-control" id="inlineFormInputGroupUsername" name="caption" id="caption" placeholder="Caption "/>
+                    {{!-- <input type="hidden" id="bannerId" name="bannerId" value="{{bannerId}}"> --}}
+                </div>
+                <!-- File Button -->
+                <div class="form-group row mt-2">
+                    <label class="col-md-4 control-label" for="filebutton">Banner Images</label>
+                    <div class="col-md-4">
+                        <input multiple="multiple" type="file" id="file " name="banner" class="input-file"></div>
+                    </div>
+                    <!-- File Button -->
+
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary" id="liveToastBtn">Add</button>
+                    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <img src="#" class="rounded me-2" alt="#">
+                                    <strong class="me-auto">Oops</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body">
+                                    {{message}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </main>
+        {{!-- <script>
+            const toastTrigger = document.getElementById('liveToastBtn')
+            const toastLiveExample = document.getElementById('liveToast')
+            if (toastTrigger) {
+                toastTrigger.addEventListener('click', () => {
+                    const toast = new bootstrap.Toast(toastLiveExample)
+
+                    toast.show()
+                })
+            }
+        </script> --}}

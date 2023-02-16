@@ -1,0 +1,45 @@
+
+<div class="m-5">
+
+
+ <head>
+    <title>Product Sold</title>
+  </head>
+  <body>
+    <h1>Product Sold</h1>
+
+
+    <table class="table table-bordered">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th >Product</th>
+                    <th>sold</th>
+
+                </tr>
+            </thead>
+            {{#if productData}}
+
+            <tbody>
+                {{#each productData}}
+                <tr>
+                    <td >
+                        {{product_name}}
+                    </td>
+                    <td>
+                        {{total_orders}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+            {{/if}}
+    </table>
+
+  </body> 
+
+  </div>
+
+<script src="/chart.js"></script>
+
+{{!-- script for excel --}}
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>

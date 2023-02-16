@@ -93,7 +93,7 @@ const userSchema = new Schema({
 
 
 
-userSchema.methods.addCart =  function(prodId,price) {
+userSchema.methods.addCart = async function(prodId,price) {
   const cartProductIndex = this.cart.findIndex(cp => {
     return cp.proId._id.toString() === prodId.toString();
   });
@@ -106,12 +106,12 @@ userSchema.methods.addCart =  function(prodId,price) {
     // let newPrice = this.cart[cartProductIndex].quantity * price;
     updatedCart[cartProductIndex].quantity = newQuantity;
   } else {
-    this.cart.push({
+     this.cart.push({
       proId: prodId,
       quantity: 1
     });
   }
-  return this.save();
+  return await this.save();
 };
 
 

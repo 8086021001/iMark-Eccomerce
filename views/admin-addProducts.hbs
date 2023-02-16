@@ -1,7 +1,7 @@
 {{>admin-navbar}}
 <main style="margin-top: 58px">
     <div class="container pt-4">
-        <form action="/admin/products/addProducts" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <form action="/admin/products/addProducts" method="post" class="form-addProducts" enctype="multipart/form-data">
             <fieldset>
                <!-- Form Name -->
                 <legend>ADD PRODUCTS</legend>
@@ -11,7 +11,7 @@
                 <div class="form-group row mt-1">
                     <label class="col-md-4 control-label" for="product_name" >PRODUCT NAME</label>
                     <div class="col-md-4">
-                        <input id="product_name" name="product_name" placeholder="PRODUCT NAME" class="form-control input-md" required="" type="text">
+                        <input id="product_name" name="product_name" placeholder="PRODUCT NAME" class="form-control input-md" type="text">
 
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                         <select class="form-select" name="category">
                             <option value="value" selected>Choose Category</option>
                             {{#each category}}
-                            <option class="text-success" value="{{_id}}" name="category" >{{name}}</option>
+                            <option class="text-success" value="{{_id}}" name="category" id="category" >{{name}}</option>
                             {{/each}}
                         </select>
                     </div>
@@ -41,7 +41,7 @@
                 <div class="form-group row mt-1">
                     <label class="col-md-4 control-label" for="price">PRICE</label>
                     <div class="col-md-4">
-                        <input id="price" name="price" placeholder="PRODUCR PRICE" class="form-control input-md" required="" type="text">
+                        <input id="price" name="price" placeholder="PRODUCR PRICE" class="form-control input-md" type="text">
 
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="form-group row mt-1">
                     <label class="col-md-4 control-label" for="available_quantity">INVENTORY</label>
                     <div class="col-md-4">
-                        <input id="inventory" name="inventory" placeholder="INVENTORY" class="form-control input-md" required="" type="text">
+                        <input id="inventory" name="inventory" placeholder="INVENTORY" class="form-control input-md" type="text">
 
                     </div>
                 </div>
@@ -86,7 +86,11 @@
                                 <input multiple type="file" id="file " name="file" class="input-file"   >
                             </div>
                         </div>
+
                         <!-- File Button -->
+                {{#if message}}
+                <div id="prodmessage" style="display: none;"><p style="color: red;">{{message}}</p></div>
+                {{/if}}
 
 
 

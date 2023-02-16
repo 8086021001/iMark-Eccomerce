@@ -1,52 +1,20 @@
 
 
-//Delete category
-let catTable= document.getElementById("catTable")
-if(catTable){
- catTable.addEventListener('click', (e)=>{
-    if(e.target.classList.contains('delete-cat')){
-        console.log("in del")
-        deleteCat(e)
-        console.log("working3")
-    }else{
-        e.preventDefault();
-    }
- })   
-}
-
-
-function deleteCat(e){
-    console.log(e.target.dataset.url) ;
-    const catId = e.target.dataset.url
-    const url = 'http://localhost:4000/admin/category/delete/'+catId
-    const id=`${catId}`
-
-    fetch(url,{
-        method:'delete',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({_id:id})
-    })
-    .then(response => response.json())
-    .then(response=>{
-        window.location.href=response.redirect
-    })
-    
-}
-
-
 //deleting product
 
 let prodData = document.getElementById('ProdData');
-console.log("in product")
 if(prodData){
     prodData.addEventListener('click',(e)=>{
         // e.preventDefault();
-        console.log('in delete 2')
         if(e.target.classList.contains('delproduct')) {
             console.log('deleting product')
             delProduct(e)
+        }
+        if(e.target.classList.contains('removeProduct')){
+            console.log('in remove ')
+
+            console.log('Removing product')
+            removeProduct(e)
         }
     })
 }
@@ -60,6 +28,24 @@ function delProduct(e){
     const id=`${proId}`
     fetch(url,{
         method: 'delete',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({_id:id})
+    })
+    .then(response => response.json())
+    .then(response=>{
+        window.location.href=response.redirect
+    })
+}
+
+function removeProduct(e){
+    console.log(e.target.dataset.url)
+    const proId = e.target.dataset.url
+    const url = 'http://localhost:4000/admin/product/remove/'+proId
+    const id=`${proId}`
+    fetch(url,{
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -200,23 +186,69 @@ function updateProduct(uid,updateFormData){
     // })
 }
 
-function validated(){
-    var err = document.querySelector('.error');
-    const updateFormData = {
-        name: document.getElementById("product_name").value,
-        category:document.getElementById("category").value,
-        price:document.getElementById("price").value,
-    }
-if( ( updateFormData.name = '')&&(updateFormData.category='')&&(updateFormData.price=="")){
-    text = "Please enter valid data"
-    err.textContent = text;
-    err.style.height = '4rem';
-    return false;
-}else{
-    return true ;
+
+// add products validation
+const addForm = document.querySelector('.form-addProducts')
+if(addForm){
+    addForm.addEventListener('submit',(event)=>{
+        event.preventDefault()
+        vatidated()
+        if(vatidated){
+            addForm.submit()
+        }else{
+            event.preventDefault()
+        } 
+    })
 }
 
+
+function vatidated(){
+
+    if(document.getElementById("product_name").value ==''){
+        alert('Name field required')
+        return false
+    }
+    else if(document.getElementById("category").value ==''){
+        alert('Category field required')
+        return false
+    }
+    else if(document.getElementById("price").value==''){
+        alert('Price field required')
+        return false
+    }
+    else if(document.getElementById('inventory').value==''){
+        alert('Inventory required')
+        return false
+    }
+    else {
+        return true
+    }
 }
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const message = document.getElementById('prodmessage');
+    if(message){
+        message.style.display = 'block';
+        setTimeout(function() {
+          message.style.display = 'none';
+        }, 2000);
+    }
+
+  });
+
+
+
+
+
 
 
 //image change in product view
@@ -227,10 +259,6 @@ function change_image(image){
 
    container.src = image.src;
 }
-
-document.addEventListener("DOMContentLoaded", function(event) {
-
-});
 
 
 

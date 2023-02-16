@@ -1,0 +1,64 @@
+{{>admin-navbar}}
+
+<main style="margin-top: 58px">
+    <nav class="navbar navbar-light bg-light">
+        <a href="/admin/getAddCoupon" class="add-btn my-0 my-sm-0">
+            <button>Add Coupon</button>
+        </a>
+    </nav>
+    <div class="container pt-4">
+
+
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Coupon Code</th>
+                    <th>Discount Amount</th>
+                    <th>Expiration Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            {{#if coupon}}
+            
+            <tbody>
+                {{#each coupon}}
+                <tr>
+                    <td>{{code}}</td>
+                    <td>{{discount}}</td>
+                    <td class="date">{{expiry}}</td>
+                    <td>
+                        {{#if isActive}}
+                        <span class="badge badge-success">Active</span>
+                        {{else}}
+                        <span class="badge badge-danger">Inactive</span>
+                        {{/if}}
+                        
+                    </td>
+                    <td>
+                        {{#if isActive }}
+                         <a href="#" class="btn btn-danger btn-sm" data-url={{_id}} >Deactivate</a>
+                        {{else}}
+                        <a href="#" class="btn btn-success btn-sm" data-url={{_id}} >Activate</a>
+                        {{/if}}
+                        <a href="#" class="btn btn-danger btn-sm" data-url={{_id}}>Delete</a>
+                    </td>
+
+                </tr>
+                {{/each}}
+
+            </tbody>
+            
+            {{else}}
+            <div>
+                <h1>No Coupons Available </h1>
+            </div>
+            {{/if}}
+        </table>
+
+
+    </div>
+</main>
+<script src="/coupon.js"></script>
+
+{{!-- bootstrap 5.3 Table data of coupon  for admin to activate and delete coupon  --}}

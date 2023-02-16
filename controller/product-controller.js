@@ -5,18 +5,17 @@ const User = require('../model/user')
 
 
 
+
 // Adding products
 const addProduct = async (req, res) =>{
     try {
       const existing = await product.find({name: req.body.product_name})
-      const images = [];
-  
+      const images = [];  
       for(key in req.files){
         const imPath = req.files[key].path
         const path = imPath.substring(imPath.lastIndexOf("\\")-8);
         images.push(path);
       }
-      console.log(images);
       let Product = new product({
         name:req.body.product_name,
         category:req.body.category,
@@ -29,20 +28,21 @@ const addProduct = async (req, res) =>{
       }) 
       if(existing.length == 0){
         if(images.length < 3 ){
+          req.session.message = "Upload atleast 4 image files"         
           return res.redirect('/admin/products/add')
         }else{
           try {
             await Product.save();
             return res.redirect('/admin/products')
           } catch (error) {
-            console.log(error)
+            console.log(error)           
             return res.redirect('/admin/products/add')
           }  
         }
   
       }else{
+        req.session.message = "Product already exists" 
         return res.redirect('/admin/products/add')
-  
       }
   } catch (error) {
       console.log(error);
@@ -56,8 +56,6 @@ const editProduct = async(req,res) =>{
     console.log('Hello');
     const id = req.params._id
     const Product = await product.findById(id).populate('category')
-    console.log("I m req params")
-    console.log(req.params)
     // const images = [];
     // for(key in req.files){
     //   console.log(req.files[key].path);
@@ -93,8 +91,6 @@ const editProduct = async(req,res) =>{
     
           const id = req.params._id
           const Product = await product.findById(id)
-          console.log(id)
-          console.log(Product) 
     
         try{
         await product.findByIdAndRemove(id)     
@@ -114,5 +110,31 @@ const editProduct = async(req,res) =>{
     }
 
 
-    module.exports = {addProduct,editProduct,deleteProduct}
+    //remove product
+    const removeProduct = async(req,res)=>{
+      const id = req.params._id
+      const Product = await product.findById(id)
+      try{
+        if(Product.isActive==true){
+          console.log('in true case')
+          await product.findByIdAndUpdate({_id:id},{
+            isActive:false
+          }) 
+         
+        }else{
+          console.log('in false case')
+          await product.findByIdAndUpdate({_id:id},{
+            isActive:true
+          }  )
+        }
+        return res.status(200).json({redirect:"http://localhost:4000/admin/products"})
+        
+      }catch (error) {
+        console.log(error)
+      }  
+    
+    }
+
+
+    module.exports = {addProduct,editProduct,deleteProduct,removeProduct}
     

@@ -50,12 +50,16 @@
 
             
       <!-- product section -->
+      
       <section class="product_section layout_padding">
+         {{#if prod}}
          <div class="container">
-            <div class="heading_container heading_center  d-flex justify-content-center">
-               <h2>
-                  Our <span>products</span>
-               </h2>
+            <div class="heading_container heading_center  d-flex justify-content-center m-5">
+               <h4 class="underlinedec">
+                  <span><u>hallmark of excellence, design and quality.</u> 
+
+                     </span>
+               </h4>
             </div>
             <div>
             <div class="row d-flex jsutify-content-center">  
@@ -89,9 +93,16 @@
             </div>
            
          </div>
-         
+  
          </div>
+         {{else}}
+      <div class="d-flex justify-content-center m-5">       
+        <div>
+         <h3>Soon launching precious products for You!</h3>
+         <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_2frpohrv.json"  background="transparent"  speed="0.3"  style="width: 600px; height: 450px;"  loop autoplay></lottie-player>
+        </div>
+      </div>
+         {{/if}}
       </section>
-
 
 {{>user-footer}}

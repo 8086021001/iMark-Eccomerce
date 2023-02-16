@@ -1,0 +1,46 @@
+
+<div class="m-5">
+
+
+ <head>
+    <title>Per-Day Sales Report</title>
+  </head>
+  <body>
+    <h1>Per-Day Sales Report</h1>
+
+
+    <table class="table table-bordered">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th >DATE</th>
+                    <th>Sales on the day in ₹</th>
+
+                </tr>
+            </thead>
+            {{#if order}}
+
+            <tbody>
+                {{#each order}}
+                <tr>
+                    <td class="reportDate">
+                        {{date}}
+                    </td>
+                    <td>
+                        {{totalAmount}}₹
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+            {{/if}}
+    </table>
+
+  </body> 
+
+  </div>
+
+<script src="/chart.js"></script>
+
+
+
+

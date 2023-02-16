@@ -1,0 +1,39 @@
+{{>admin-navbar}}
+
+<main style="margin-top: 58px">
+    <div class="container pt-4">
+
+        <nav class="navbar navbar-light bg-light">
+            <a href="/admin/update/banner" class="add-btn my-0 my-sm-0">
+                <button>Change Banner</button>
+            </a>
+    </nav>
+    <div class="container pt-4">
+        <table class="table" id="catTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Banners</th>
+                    <th scope="col ">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>dkdk</td>
+                    <td class="text-center">
+                        <ul class="d-flex justify-content-left p-0" style="list-style-type: none;">
+                            <li class="px-lg-0">
+                                <button  class="btn btn-sm btn-danger delete-cat" name="delete-cat" id="delete" data-url={{_id}}>Delete</button>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+
+     </div>
+
+
+
+
+    </div>
+</main>

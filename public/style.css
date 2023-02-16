@@ -371,3 +371,65 @@ background-color: #E53935
 .address-form-body{
   width: 43vw;
 }
+
+#addressButton{
+  background-color: #3b0aec;
+  color: white;
+}
+.exaddress{
+  margin-left: 6.5vw;
+}
+
+
+/*modal*/
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* underline================== */
+
+/* .underlinedec {
+  text-align: center;
+  margin: 30px 0;
+  position: relative;
+} */
+
+/* .underlinedec::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  border-bottom: 4px solid blue;
+} */

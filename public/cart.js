@@ -1,5 +1,4 @@
 let cartCard = document.querySelector('.cart-items-container');
-console.log(cartCard)
 if(cartCard) {
     
     cartCard.addEventListener('click' , (e) => {
@@ -11,8 +10,11 @@ if(cartCard) {
         else if(e.target.classList.contains('quantity-up')) {
             incQuantity(e);
         } 
+        
         else if(e.target.classList.contains('quantity-down')) {
-            decQuantity(e);
+            
+                decQuantity(e);
+                
         }    
     })
 }
@@ -29,10 +31,20 @@ if(cartCard) {
                     'Content-Type' : 'application/json'
                     }
                 });
+
+
                 
     const redirectPath = await res.json();
     window.location.href = redirectPath.redirect;
+
+
+
+
 }
+
+
+
+
 
 async function incQuantity(e) {
     const productId = e.target.dataset.url;
@@ -51,6 +63,8 @@ async function incQuantity(e) {
     window.location.href = redirectPath.redirect;
 }
 
+
+
 async function decQuantity(e) {
     const productId = e.target.dataset.url;
     console.log(productId);
@@ -64,6 +78,21 @@ async function decQuantity(e) {
                     }
                 });
                 
+    // if(e.target.parentNode.querySelector('#form1').value == 1); {
+    //    e.target.disabled = true;
+    // }
+
+
     const redirectPath = await res.json();
     window.location.href = redirectPath.redirect;
 }
+
+
+///error message timing
+// document.addEventListener('DOMContentLoaded', function() {
+//     const message = document.getElementById('errormessagecart');
+//     message.style.display = 'block';
+//     setTimeout(function() {
+//       message.style.display = 'none';
+//     }, 2000);
+//   });

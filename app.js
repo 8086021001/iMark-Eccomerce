@@ -12,6 +12,9 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const adminRoute = require('./routes/admin')
 const orderRoute = require('./routes/order')
+const flash = require('connect-flash');
+
+
 
 
 
@@ -40,6 +43,7 @@ app.use(session({
         collectionName: 'sessions'})
 
   }))
+  app.use(flash())
 
 app.use((req, res, next) => {
     res.set('cache-control', 'no-cache,private,no-store,must-revalidate,max-stale=0,post-check=0,pre-check=0')

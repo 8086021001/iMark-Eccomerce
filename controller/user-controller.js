@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const product = require('../model/product')
 const session = require('express-session')
 const categories = require('../model/categories')
+const banner = require('../model/banner')
+
 
 
 
@@ -28,15 +30,16 @@ const getLanding = (req,res)=>{
 
 const getHome = async(req,res)=>{
     try {
-        console.log(req.session.userId)
         if(req.session.userId){
-          const proData = await product.find({highlights:{$exists:true,$nin:[""]}}).populate('category')
+          const proData = await product.find({$and: [{highlights:{$exists:true,$nin:[""]}},{isActive:{$exists:true}}]}).populate('category')
           const catData = await categories.find({})
-          if(proData.length!=0){
+          const banners = await banner.find()
+    
+          if(proData.length!=0||catData.length!=0||banners.length!=0){
               proData.forEach((product, index, array)=>{
                 array[index].images = product.images.splice(0,1);
                 })
-                res.render('home',{categories:catData,prod:proData})
+                res.render('home',{bannerData:banners,categories:catData,prod:proData,})
           }else{
             res.render('home')
           }
@@ -58,12 +61,20 @@ const getShop = async(req,res)=>{
   try {
     const prodData = await product.find({}).populate('category')
     if(prodData.lenth!=0){
-      prodData.forEach((Pro,index,array)=>{
-        array[index].images = Pro.images.splice(0,1);
-      })
-      res.render('shop',{prod:prodData})
+      console.log('inside product')
+      if(prodData[0].isActive){
+        prodData.forEach((Pro,index,array)=>{
+          array[index].images = Pro.images.splice(0,1);
+        })
+        res.render('shop',{prod:prodData})
+      }else{
+        res.render('shop')
+      }
     }
-
+    else{
+      res.render('shop')
+    }
+    
   } catch (error) {
     console.log(error)
   }
@@ -87,16 +98,18 @@ const getCatProduct = async(req,res)=>{
     
     const catName = req.params.name
     let prodData = await product.find({}).populate('category')
-    prodData = prodData.filter((prod)=>{
-      if(prod.category.name == catName){
-        return prod;
-      }
-    })
-    prodData.forEach((Pro,index,array)=>{
-      array[index].images = Pro.images.splice(0,1);
-    })
-    console.log(prodData)
-    res.render('shop',{prod:prodData})
+    if(prodData[0].isActive){
+      prodData = prodData.filter((prod)=>{
+        if(prod.category.name == catName){
+          return prod;
+        }
+      })
+      prodData.forEach((Pro,index,array)=>{
+        array[index].images = Pro.images.splice(0,1);
+      })
+      res.render('shop',{prod:prodData})
+    }
+
   } catch (error) {
     
   }
@@ -110,7 +123,7 @@ const userLogin = async(req,res)=>{
         const myuser = await user.find({email: req.body.email})
         console.log(myuser)
         
-        if(myuser.length == 1 ){
+        if(myuser.length == 1&&myuser[0].Action){
           req.session.userId = myuser[0]._id;
           console.log('Hello')
           let isVerified = await bcrypt.compare(req.body.password, myuser[0].password)

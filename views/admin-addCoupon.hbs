@@ -1,0 +1,41 @@
+{{>admin-navbar}}
+
+<main style="margin-top: 58px">
+    <div class="container pt-4">
+
+<div class="card col-md-6 p-5 d-flex justify-content-*-between" style="margin-left: 21VW;">
+  <div id="hidden">
+{{#if message}}
+<div id="errorMessage" style="display: none;"><p style="color: red;">{{message}}</p></div>
+{{/if}}
+</div>
+
+<form  action="/admin/addCoupon" method="post" id="couponForm">
+  <div class="form-group p-2">
+    <label for="couponCode">Coupon Code</label>
+    <input type="text" name="name" class="form-control" id="couponCode" placeholder="Enter coupon code">
+  </div>
+  <div class="form-group p-2">
+    <label for="expiryDate">Expiry Date</label>
+    <input type="date" name="expiry" class="form-control" id="expiryDate" placeholder="Enter expiry date">
+  </div>  
+  <div class="form-group p-2">
+    <label for="discountAmount">Discount </label>
+    <input type="number" name="discount" class="form-control" id="discountAmount" placeholder="Enter discount amount">
+  </div>
+    <div class="form-group p-2">
+    <label for="expiryDate">minimum</label>
+    <input type="text" name="minimum" class="form-control" id="minimum" placeholder="Enter minimum purchase amount">   
+    </div>
+
+  <div class="p-4"> 
+    <button type="submit" class="btn btn-primary">Submit</button> 
+  </div>
+  
+</form>
+</div>
+
+
+    </div>
+</main>
+<script src="/coupon.js"></script>

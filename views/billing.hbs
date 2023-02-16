@@ -1,4 +1,29 @@
 {{>user-header}}
+<div class="row m-2 mx-5">
+<div class="card col-md-7 my-4 mx-5 exaddress">
+{{#each add}}
+<div class="p-2" >
+    <input type="radio" id="addressButton" name="address" value="{{_id}}">
+   Address</input>
+   <p>{{address}},City:{{city}},State: {{sate}},Zip Code: {{zip}} </p>
+</div>
+{{/each}}
+</div>
+<div class="card col-md-3 my-4 mx-4">
+  <div class="coupon">
+        <div class="mt-3 px-4">
+          <h5>
+            Apply Your discount code
+          </h5>
+          <input class="form-control couponcode" id="couponcode" placeholder="Enter Promocode">
+          <button class="btn btn-success w-100 mt-2" id="couponButton">Apply discount</button>
+        </div>
+  </div>
+  <div class="message" id="couponMessage" style="color: red;"></div>
+</div>
+</div>
+<div class="error" style="color: red;">{{errMessage}}</div>
+
 
 
 <div class="row m-5">
@@ -7,7 +32,11 @@
       <div class="card-header py-3">
         <h5 class="mb-0">Biling details</h5>
       </div>
-      <div class="card-body address-form-body">
+      
+<div class="  mb-4 px-5 my-2 togglerCardBody">
+
+<button type="button" class="collapsible" id="addressButton">Add New Address</button>
+      <div class="content card-body address-form-body">
         <form name="adress-form" id="adress-form" method="post" action="/order/payment">
           <!-- 2 column grid layout with text inputs for the first and last names -->
 
@@ -57,11 +86,11 @@
           </div>
           <div  class="d-flex justify-content-center">
             <button type="submit" class="btn btn-primary" >Submit</button>
-            {{!-- <input type="submit" value="Submit"> --}}
           </div>
         </form>
       </div>
     </div>
+  </div>
   </div>
 
   <div class="col-md-4 mb-4">
@@ -86,7 +115,9 @@
                 <p class="mb-0">(including VAT)</p>
               </strong>
             </div>
-            <span><strong><h4 class="order-price">{{totprice}}</strong></span>
+            <span><strong><h4 class="order-price" id="order-price">{{totprice}}</h4></strong></span>
+            <div class="error" style="color: red;">{{message}}</div>
+
           </li>
         </ul>
 
@@ -96,27 +127,18 @@
           <button type="button" class="btn btn-primary btn-lg btn-block razorpay-button">
           RazorPay
         </button>
+
+        <div style="margin-top: 8px;" id="paypal"></div>
+        {{!-- <button type="button" class="btn btn-primary btn-lg btn-block paypal">
+          PayPal
+        </button> --}}
       </div>
-            {{#each add}}
-
-        <section class="adress-details-card-container">
-          
-         <div class="adress-details-card">
-             <input type="radio" id="address" name="address" value="{{_id}}">Use
-              address</input>
-        <h3 class="text-center mt-3">Address</h3>
-        <p>Address: {{address}}</p>
-        <p>City: {{city}}</p>
-        <p>State: {{sate}}</p>
-        <p>Zip Code: {{zip}}</p>
-         </div>
-        </section>
-              {{/each}}
-
     </div>
   </div>
 
 </div>
+
+  <script src="/order.js"></script>
 
 
 {{>user-footer}}
