@@ -10,7 +10,7 @@ const {getAdmin,adminLogin,adminLogout,adminUsers,
         getSalesReport,downloadProductReport,
         getProductSalesReport,downloadProductSalesExcel,
         downloadPerdaySalesExcel,orderDetails,deliverOrder,categoryOffer,
-        applyCatoffer,viewOrder,approveReturnOrder} = require('../controller/admin-controller')
+        applyCatoffer,viewOrder,approveReturnOrder,setOrderStatus} = require('../controller/admin-controller')
 
 const {addProduct,editProduct,deleteProduct,removeProduct} = require('../controller/product-controller')
 const {getCategory,getAddCategories,addCategory,deleteCategory} = require('../controller/category-controller')
@@ -42,6 +42,7 @@ router.get('/orderDetails',orderDetails)
 router.get('/categoryOffer/:_id',categoryOffer)
 router.get('/viewOrder/:_id',viewOrder)
 
+
 //-----
 router.route('/login').post(adminLogin);
 router.route('/category/add').post(upload.array('file',1),adminAuthenticated,addCategory);
@@ -49,6 +50,8 @@ router.route('/products/addProducts').post(upload.array('file',4),adminAuthentic
 router.post('/bannerControl',upload.array("banner",3),adminAuthenticated,editBanner)
 router.post('/addCoupon',adminAuthenticated,addCoupon)
 router.post('/apply-Catoffer/:_id',applyCatoffer)
+router.post('/setOrderStatus',setOrderStatus)
+
 
 //----
 router.put('/users/block/:_id',adminAuthenticated,blockUser);

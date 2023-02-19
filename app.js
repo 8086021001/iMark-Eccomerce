@@ -62,7 +62,8 @@ app.engine('hbs', hbs.engine({
     layoutsDir: path.join(__dirname, 'views/layouts'),
     partialsDir: path.join(__dirname, 'views/partials'),
     defaultLayout: "layout",
-    handlebars: allowInsecurePrototypeAccess(Handlebars)
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
+    helpers:require('./connection/helpers')
     }));
 
 //routes

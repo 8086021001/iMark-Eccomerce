@@ -3,6 +3,7 @@ const user = require('../model/user')
 const product = require('../model/product')
 const category = require('../model/categories');
 const Order = require('../model/order')
+const {ObjectId} =require('mongoDb')
 const banner = require('../model/banner')
 const puppeteer = require('puppeteer');
 const XLSX = require('xlsx');
@@ -162,6 +163,8 @@ const blockUser = async (req, res) => {
         } catch (error) {}
     }
 }
+
+//order details for pdf
 const getOrderDetails = async(req,res)=>{
     try {
         const productSale = await Order.aggregate(
@@ -528,12 +531,21 @@ const orderDetails = async(req,res)=>{
     }
 }
 
-//deliver order
+//deliver order by admin
 const deliverOrder = async (req,res)=>{
     try {
         let id = req.params._id
-        let order = await Order.findOneAndUpdate({_id:id},{$set:{'isDelivered':true,'deliveredAt':Date.now()}})
-        res.json({redirect:"/admin/orderDetails"})
+        let order =await Order.find({_id:id})
+        if(order[0].isShipped){
+            order[0].isDelivered = true;
+            order[0].deliveredAt = Date.now();
+            order[0].save();
+            res.json({redirect:"/admin/orderDetails"})
+        }else{
+            let msg = 'Order not yet shipped'
+            res.json({messag:msg})
+        }
+
 
     } catch (error) {
         console.log(error)
@@ -575,16 +587,55 @@ const applyCatoffer = async (req,res)=>{
     }
 }
 
-//view order
+//view order for admin
 const viewOrder =async (req,res)=>{
     try {
         let id = req.params._id
-        let order = await Order.aggregate(
-            [
+        console.log(id)
+        let order = await Order.aggregate([
+            {
+            $match:{
+                _id: ObjectId(id)
+            }
+        },{
+            $unwind:{
+                path: '$orderItems' 
+        }
 
-            ]
-        )
+        },
+        {
+           $lookup: {
+                from: 'products',
+                localField: 'orderItems.proId',
+                foreignField: '_id',
+                as: 'result'
+              }
+        },
+        {
+           $unwind: {
+                path: '$result',
+              
+              }
+        },
+        {
+           $group: {
+                _id:{
+                          resultId: "$result._id",
+                      productName: "$result.name",
+                      productPrice:"$result.price",
+                      image:"$result.images",
+                      totalAmount: "$totalAmount",
+                      quantity: "$orderItems.quantity"
+                }
+              
+              }
+        }
+        ])
+        console.log(order)
+        res.render('admin-ViewOrderDetails',{Order:order,id})
         
+
+
     } catch (error) {
         
     }
@@ -594,22 +645,91 @@ const viewOrder =async (req,res)=>{
  const approveReturnOrder = async(req,res)=>{
     try {
         let id = req.params._id
-        console.log(id)
-        let order = await Order.findOneAndUpdate({_id:id},{$set:{'returned':true}})
-        console.log(order);
-        let orderQuant = order.orderItems[0]
-        let quant = []
-        for(let i = 0; i<order.orderItems.length;i++){
-            quant.push = order.orderItems[i].quantity;
+        let order = await Order.find({_id:id})
+        let User = await user.find({_id:req.session.userId})
+        if(order[0].inReturn){
+            order[0].returned = true;
+            order[0].save()
+            let productUpdate = async function(proId,quantity){
+                const Product = await product.find({_id: proId});
+                Product[0].inventory = Product[0].inventory + quantity;
+                await Product[0].save();
+           }
+           order[0].orderItems.forEach((item)=> {
+               productUpdate(item.proId,item.quantity)
+           })
+ 
+            const transaction = {
+                order: order[0]._id,
+                 };
+            let balanceAmount = order[0].totalAmount;
+            User[0].wallet.balance += balanceAmount
+             User[0].wallet.transactions.push(transaction);
+             await User[0].save();
+           res.json({redirect:"/admin/orderDetails"})
+        }else{
+            let msg = 'Unable to accept return'
+            res.json({redirect:"/admin/orderDetails",message:msg})
         }
-        console.log(quant)
-        
+
+
+
 
     } catch (error) {
         console.log(error)
     }
  }
 
+ //set order status by admin
+
+ const setOrderStatus =async(req,res)=>{
+
+    try {
+        console.log(req.body)
+        let id = req.body.id
+        let status = req.body.stat
+        console.log(id);
+        console.log(status);
+        let order = await Order.find({_id:id})
+        if(status=='Shipped'){
+            order[0].isShipped = true,
+            order[0].orderStatus = "Shipped"
+            order[0].save();
+            console.log(`${order[0].isShipped}`,`${order[0].orderStatus}`)
+            res.json({redirect:'/admin/orderDetails'})
+        }else if(status=='Arriving Today'){
+            if(order[0].isShipped){
+                order[0].orderStatus = "Arriving Today";
+                order[0].save();
+                res.json({redirect:'/admin/orderDetails'})
+
+            }else{
+                let msg = 'Order not shipped, please ship Order!!'
+                res.json({redirect:'/admin/orderDetails',message:msg})
+            }
+
+
+        }else if(status=='Confirmed'){
+            if(!order[0].isShipped){
+                order[0].orderStatus = "Confirmed";
+                order[0].save();
+                res.json({redirect:'/admin/orderDetails'})
+            }else{
+                let msg = 'Order shipped!!!'
+                res.json({redirect:'/admin/orderDetails',message:msg})
+            }
+
+        }else{
+            let msg = 'Un authorised request!'
+            res.json({redirect:'/admin/orderDetails',message:msg})
+        }
+
+    
+    } catch (error) {
+        console.log(error)
+        
+    }
+ }
 
 
 
@@ -639,7 +759,8 @@ module.exports = {
     categoryOffer,
     applyCatoffer,
     viewOrder,
-    approveReturnOrder
+    approveReturnOrder,
+    setOrderStatus
     
     
 }

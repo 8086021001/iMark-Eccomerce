@@ -62,9 +62,7 @@
                                     <div class="d-flex justify-content-between pt-2">
                                         <p class="text-muted mb-0">Invoice Number :
                                             {{_id}}</p>
-                                        {{!-- <p class="text-muted mb-0">
-                                            <span class="fw-bold me-4">Discount</span>
-                                        </p> --}}
+
                                     </div>
 
                                     <div class="d-flex justify-content-between">
@@ -88,12 +86,25 @@
                                         <span class="h2 mb-0 ms-2">₹</span>
                                     </h5>
                                     <div class="cancelOrder">
-                                        <p class="orderDeleted" style="color: crimson;">{{message}}</p>
-                                    <button type="button"  class="btn btn-sm btn-danger returnOrder" name="returnOrder" id="returnOrder" data-url={{_id}}>Return</button>
-                                    <p class="orderDeleted" style="color: crimson;">Order Canceled</p>
-                                    <button type="button"  class="btn btn-sm btn-danger deleteOrder" name="deleteOrder" id="deleteOrder" data-url={{_id}}>Cancel Order</button>
-                                     <p class="orderDeleted" style="color: crimson;">Processing your payment</p>
-                                    <div><p style="color: red;" id="message"></p></div>
+                                        {{#if (and isCancelled (eq isDelivered false))}}
+                                        <p class="orderDeleted" style="color: white;">Order Canceled</p>
+                                        {{else}}
+                                        {{#if (and isDelivered (eq returned false)) }}
+                                        <button type="button"  class="btn btn-sm btn-danger returnOrder" name="returnOrder" id="returnOrder" data-url={{_id}}>Return</button>
+                                        {{else}}
+                                        {{#if (and isDelivered returned )  }}
+                                        <p class="orderDeleted" style="color: rgb(236, 60, 60);"><h6 style="color: crimson;">Amount refunded to your wallet!</h6> </p>
+                                        {{else}}
+                                        <button type="button"  class="btn btn-sm btn-danger deleteOrder" name="deleteOrder" id="deleteOrder" data-url={{_id}}>Cancel Order</button>
+                                        {{/if}}
+                                        {{/if}}
+                                        {{/if}}
+                                    <p class="orderDeleted" style="color: white;">{{message}}</p>
+                                    <div><p style="color: white;" id="message"></p></div>
+                                    {{#if (and inReturn (eq returned false))}}
+                                    <div><p style="color: red;" id="Returnmessage">Waiting for Approval</p></div>
+                                    {{/if}}
+
                                     </div>
                                 </div>
                             </div>

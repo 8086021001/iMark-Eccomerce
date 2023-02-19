@@ -120,6 +120,11 @@
 
           </li>
         </ul>
+        {{#if (gt walBal totprice)}}
+        <button type="button" class="btn btn-primary btn-lg btn-block walletButton" id="walletButton">
+         Pay using wallet
+        </button>
+        {{/if}}
 
         <button type="button" class="btn btn-primary btn-lg btn-block cod-button">
           COD
@@ -139,6 +144,52 @@
 </div>
 
   <script src="/order.js"></script>
+  <script>
+
+//////paypal
+const orderPriceElement = document.getElementById("order-price");
+
+    const totprice =  Math.round(orderPriceElement.innerHTML);
+  paypal
+  .Buttons({
+
+    createOrder: async function () {
+      return await fetch("http://localhost:4000/order/create", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items:[
+            {totalAmount:totprice },
+            {paymentMethod: "paypal"},
+            {orderStatus: 'placed'},
+            {shippingInfo: document.querySelector('input[name="address"]:checked').value}
+          ]
+        })
+
+      })
+        .then (async res => {
+          if (res.ok) return res.json()
+          else if(res.redirect ) window.location=res.redirect
+          return res.json().then(json => Promise.reject(json))
+        })
+        .then(({ id }) => {
+          return id
+        })
+        .catch(e => {
+          console.error(e.error)
+        })
+    },
+    onApprove: function (data, actions) {
+      return actions.order.capture().then(function (orderData) {
+        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+        window.location = ("/order/success")
+    });
+    },
+  })
+  .render("#paypal")
+  </script>
 
 
 {{>user-footer}}

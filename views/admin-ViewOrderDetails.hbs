@@ -1,0 +1,30 @@
+{{>admin-navbar}}
+<main style="margin-top: 58px">
+    <div class="container pt-4">
+<div>
+    <h3>Order Details</h3>
+</div>
+{{#each Order}}
+<div class="card col-md-12 row mt-4 ">
+    
+  <div class=" d-flex justify-content-between">
+    
+    <div class=" d-flex col-md-4 justify-content-center ">    
+  <img src="{{id}}/{{_id.image.[0]}}" class="card-img rounded w-25 h-75 px-0 py-3" alt="{{this._id.productName}}">
+  </div>
+  <div class=" col-md-1 px-5">
+    
+  </div>
+  <div class="card-body col-md-6 mt-3">
+    <h5 class="card-text">Product Name: {{this._id.productName}}</h5>
+    <h6 class="card-text">Price: ₹. {{this._id.productPrice}}</h6>
+    <h6 class="card-text">Quantity: {{this._id.quantity}}</h6>
+    <h6 class="card-text">Total amount: ₹. {{this._id.totalAmount}}</h6>
+  </div>
+  </div>
+</div>
+
+{{/each}}
+
+    </div>
+    </main>

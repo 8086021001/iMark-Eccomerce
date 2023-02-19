@@ -28,8 +28,6 @@ for (let index = 0; index < dateContainer.length; index++) {
 
 //validation
 let Cform = document.getElementById('couponForm');
-console.log(Cform);
-// 
 if(Cform){
     Cform.addEventListener('submit',(e)=>{
         e.preventDefault();

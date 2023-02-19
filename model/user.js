@@ -85,7 +85,19 @@ const userSchema = new Schema({
               type: String,
              }
          }
-     ] 
+     ],
+     wallet:{
+      balance:{
+        type:Number,
+        default:0
+      },
+      transactions:[{
+        order:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'order'
+        }
+      } ]
+     }
 
 }
 )

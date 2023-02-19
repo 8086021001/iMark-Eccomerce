@@ -8,30 +8,23 @@ const getCart = async(req,res)=>{
     
     const user = await User.find({_id: req.session.userId}).populate('cart.proId');
     const prodData = user[0].cart
-    const totalQuantity = prodData.reduce((total , prod) => {
+    const totalQuantity = prodData.reduce((total,prod) => {
       return total+prod.quantity;
    } , 0);
       const totalPrice = prodData.reduce((total , prod) => {
       return total+ (prod.quantity * prod.proId.price) 
    } , 0);   
-   console.log(totalQuantity,totalPrice)
-
     prodData.forEach((prod) => {
-      console.log(prod.proId.inventory)
      if(prod.quantity >= prod.proId.inventory) {
          prod.increment = true
      } 
-     else if(prod.quantity === 1) {
+     else if(prod.quantity === 1 ) {
       prod.decrement = true;
      }
-
   })
-
   let message = req.session.message
   req.session.message = null
   return res.render('cart',{prod:prodData, totQuant:totalQuantity, totPrice:totalPrice, message})
-
-
   } catch (error) {
     console.log(error)
   }
@@ -44,7 +37,6 @@ const addToCart = async(req,res)=>{
     const Product =await product.find({_id:req.params._id})
     const prodId = Product[0]._id
     const price =  Product[0].price
-    console.log(price)
     const user = await User.find({_id: req.session.userId})
     if(Product[0].inventory!=0){
       await user[0].addCart(prodId,price);
@@ -55,7 +47,6 @@ const addToCart = async(req,res)=>{
 
       let quant = nowUserCart[0].cart[cartProductIndex].quantity
       Product[0].inventory = Product[0].inventory-quant
-      console.log(Product[0].inventory)
       Product[0].save();
       return res.redirect('/cart');
     }else{
@@ -73,7 +64,6 @@ const cartIncrement = async  (req,res) => {
   try {
       const user = await User.find({_id: req.session.userId});
       const Product =await product.find({_id:req.params._id}) 
-      console.log(user[0].cart[0].quantity)
       const index = await user[0].cart.findIndex((item) => {
        return item.proId.valueOf() === `${id}` });
       if(Product[0].inventory!=0){
@@ -92,19 +82,35 @@ const cartIncrement = async  (req,res) => {
 }
 
 const cartDecrement = async  (req,res) => {
-  const id = req.params._id;
   try {
-      const user = await User.find({_id: req.session.userId});
-      const Product =await product.find({_id:req.params._id}) 
+      const id = req.params._id;
+      const cartProductQuantity = req.body.quantValue
+      console.log(cartProductQuantity)
+      const user = await User.find({_id: req.session.userId}).populate('cart.proId');
+      const Product = await product.find({_id:req.params._id}) 
       const index = await user[0].cart.findIndex((item) => { 
-        return item.proId.valueOf() === `${id}` });
-        if(Product[0].inventory!=0){
+        return item.proId._id.valueOf() === `${id}` 
+      });
+      if(cartProductQuantity!=1){
           user[0].cart[index].quantity = user[0].cart[index].quantity - 1;
           await  user[0].save();
           Product[0].inventory=Product[0].inventory+1;
           await Product[0].save();
-          res.json({redirect: '/cart'});
+          const totalPrice = user[0].cart.reduce((total , prod) => {
+            return total+ (prod.quantity * prod.proId.price) 
+          } , 0);  
+          res.json({
+            quantity: user[0].cart[index].quantity,
+            totalAmount: totalPrice
+          });
+        }else{
+          if(index!== -1){
+            user[0].cart.splice(index,1)
+            await user[0].save();
+            res.json({redirect:'/cart'})
+          }
         }
+
 
   } catch(e) {
       console.log(e);

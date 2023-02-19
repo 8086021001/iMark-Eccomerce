@@ -1,5 +1,45 @@
 
-console.log('In order')
+
+
+
+
+//admin orderstatus setting
+
+const statusForm = document.querySelectorAll('#order-form');
+if(statusForm){
+  statusForm.forEach(statform => {
+
+    statform.addEventListener('submit', async (event) => {
+      event.preventDefault(); 
+      const Sid = statform.querySelector('input[name="Sid"]').value;
+      const status = statform.querySelector('input[name="status"]').value;
+      console.log(Sid)
+      console.log(status)
+      const res = await fetch(statform.action, {
+
+        method: statform.method,
+        credentials: "same-origin",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id:Sid,
+          stat:status
+        })
+      })
+      const response = await res.json();
+      if(response.message){
+        let messag = document.querySelector('#messages')
+        messag.innerHTML = response.message
+      }else{
+        window.location.href = response.redirect;
+      }
+
+    });
+  });
+
+
+}
 
 //Biiling toggler
 let collapseAddres = document.querySelector(".collapsible");
@@ -22,7 +62,7 @@ if(collapseAddres) {
 
 ///address check validation
 
-// const radioButtons = document.querySelectorAll('input[type="radio"]');
+
 
 const radioBtn =  document.querySelector('input[type="radio"]');
 if(radioBtn){
@@ -51,13 +91,6 @@ if (razorbtn) {
 
 
 
-
-
-
-
-
-
-
 //for creating order
 
 async function createOrder(e) {
@@ -65,10 +98,8 @@ async function createOrder(e) {
     const url = `http://localhost:4000/order/create`;
     let methodofPayment;
     if (e.target.classList.contains('cod-button')) {
-        console.log('COD!!');
         methodofPayment = 'cash on delivery'
     } else if (e.target.classList.contains('razorpay-button')) {
-        console.log('razor');
         methodofPayment = 'Razor pay'
     }
 
@@ -81,7 +112,7 @@ async function createOrder(e) {
         body: JSON.stringify({
             totalAmount: document.querySelector('.order-price').textContent,
             paymentMethod: methodofPayment,
-            orderStatus: 'placed order',
+            orderStatus: 'placed',
             shippingInfo: document.querySelector('input[name="address"]:checked').value
         })
     })
@@ -111,79 +142,36 @@ async function createOrder(e) {
 }
 
 
-//delete order
-let cancelOrder = document.getElementById('deleteOrder')
-if(cancelOrder){  
-    cancelOrder.addEventListener("click", (e) =>{
-        console.log('Hi')
-        delOrder(e);
-    })
+//user cancel order
+let cancelOrder = document.querySelectorAll('#deleteOrder')
+if(cancelOrder){ 
+  cancelOrder.forEach((cancelBut)=>{
+    cancelBut.addEventListener("click", (e) =>{
+      delOrder(e);
+  })
+  }) 
 }
 
 async function delOrder(e){
     const orderId = e.target.dataset.url 
     console.log(orderId)
     const url = `http://localhost:4000/order/cancel/${orderId}`
-let res =  await  fetch(url,{
+    let res =  await  fetch(url,{
         method: 'put',
         headers: {
             'Content-Type': 'application/json'
         },
     })
-    const redirectPath = await res.json();
-    window.location.href = redirectPath.redirect;
+    const response = await res.json();
+    if(response.messag){
+      let message = document.getElementById('message')
+      message.innerHTML = response.messag;
+    }else{
+      window.location.href = response.redirect;
+
+    }
 }
 
-
-
-//////paypal
-const orderPriceElement = document.getElementById("order-price");
-if(orderPriceElement){
-  const totprice = orderPriceElement.innerHTML;
-}
-
-if(paypal){
-  paypal
-  .Buttons({
-    
-    createOrder: async function () {
-      return await fetch("http://localhost:4000/order/create", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          items:[
-            {totalAmount:totprice },
-            {paymentMethod: "paypal"},
-            {orderStatus: 'placed order'},
-            {shippingInfo: document.querySelector('input[name="address"]:checked').value}
-          ]
-        })
-
-      })
-        .then (async res => {
-          if (res.ok) return res.json()
-          else if(res.redirect ) window.location=res.redirect
-          return res.json().then(json => Promise.reject(json))
-        })
-        .then(({ id }) => {
-          return id
-        })
-        .catch(e => {
-          console.error(e.error)
-        })
-    },
-    onApprove: function (data, actions) {
-      return actions.order.capture().then(function (orderData) {
-        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-        window.location = ("/order/success")
-    });
-    },
-  })
-  .render("#paypal")
-
-}
 
 
 
@@ -233,13 +221,17 @@ if(paypal){
       element.textContent =  day+"-"+month+"-"+ year ;
   }
 
-//deliver order
+//admin deliver order
 
-let delivOrder = document.querySelector("#deliver") 
+let delivOrder = document.querySelectorAll("#deliver") 
 if(delivOrder){
-  delivOrder.addEventListener('click',(e)=>{
-          deliverOrder(e)
+  delivOrder.forEach((delbutton)=>{
+    delbutton.addEventListener('click',(e)=>{
+      deliverOrder(e)
+})
+
   })
+
 }
 
 async function deliverOrder(e){
@@ -254,17 +246,24 @@ async function deliverOrder(e){
       })
       const respo = await res.json();
       console.log(respo)
-      window.location.href = respo.redirect;
+      if(respo.messag){
+        let message = document.getElementById("message")
+        message.innerHTML = respo.messag
+      }else{
+        window.location.href = respo.redirect;
+
+      }
 
 }
 
-
-let retOrder = document.querySelector("#returnOrder")
+//user returning order
+let retOrder = document.querySelectorAll("#returnOrder")
 if(retOrder){
-  retOrder.addEventListener('click',(e)=>{
-    returnOrder(e)
+  retOrder.forEach((retBut)=>{
+    retBut.addEventListener('click',(e)=>{
+      returnOrder(e)
+    })
   })
-
 }
 
 async function returnOrder(e){
@@ -280,14 +279,12 @@ async function returnOrder(e){
         })
         const respo = await res.json();
         console.log(respo)
-        if(respo.redirect){
-          window.location.href = respo.redirect;
-        }else{
+        if(respo.messag){
           let meassage = document.querySelector('#message')
-          meassage.innerHTML = respo.meassage
+          meassage.innerHTML = respo.meassag
+        }else{
+          window.location.href = respo.redirect;
         }
-        
-      
   } catch (error) {
     console.log(error)
     
@@ -314,8 +311,54 @@ async function approveReturn(e){
             'Content-Type' : 'application/json'
             },
         })
-        const resp = await res.json(); 
+        const response = await res.json(); 
+        if(response.meassag){
+          let meassage = document.querySelector('#message')
+          meassage.innerHTML = response.meassag
+
+        }else{
+          window.location.href = response.redirect;
+        }
   } catch (error) {
     console.log(error)
   }
+}
+
+
+//create order using wallet 
+
+let walBut = document.querySelector("#walletButton")
+
+if(walBut){
+  walBut.addEventListener('click', (e)=>{
+    console.log('In wallet')
+    createWalletOrder(e)
+
+  })
+}
+
+async function createWalletOrder(e){
+  if(e.target.classList.contains('walletButton')){
+    let methodofPayment = 'Wallet'
+    console.log(document.querySelector('.order-price').textContent)
+
+    const url = `http://localhost:4000/order/create`;
+    const res = await fetch(url, {
+      method: 'post',
+      credentials: "same-origin",
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          totalAmount: document.querySelector('.order-price').textContent,
+          paymentMethod: methodofPayment,
+          orderStatus: 'placed',
+          shippingInfo: document.querySelector('input[name="address"]:checked').value
+      })
+    })
+    const redirectPath = await res.json()
+    window.location.href = redirectPath.redirect;
+  }
+
+
 }

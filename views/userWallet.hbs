@@ -1,0 +1,85 @@
+{{>user-header}}
+{{!-- //navbar --}}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid ">
+    <div class="collapse navbar-collapse ml-auto text-cente d-flex justify-content-between" id="navbarNav">
+      <div>
+
+      </div>
+      <div>
+      <ul class="navbar-nav navbar-center ml-auto text-cente">
+        <li class="nav-item ">
+          <a class="nav-link px-4" aria-current="page" href="/home">Home</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link px-4" href="/shop">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-4" href="#">Featured</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  px-4" href="#" tabindex="-1" aria-disabled="true">About</a>
+        </li>
+      </ul>
+      </div>
+      <div>
+      <ul class="nav navbar-nav " >
+      <li><a class="fa fa-shopping-cart fs-5 text-dark mx-4" href="/cart"> cart</a></li>
+      </ul> 
+      </div>
+    </div>
+  </div>
+</nav>
+{{!-- navbar end --}}
+
+
+<div class="d-flex justify-content-center">
+<div class="card col-md-8  m-5">
+  <div class="card-header">
+    Wallet Balance
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>Balance</h5>
+        <h5>₹ {{balance}}</h5>
+      </div>
+      <div class="col-md-8">
+        <h5 class="px-4">Transactions</h5>
+        <ul>
+          {{#each transactions}}
+            <div class="row">
+              <div class="col-md-12">
+                <table class="border">
+                <td><h6>Payment Method:   </h6>
+                <p> {{order.paymentMode}}</p></td>
+                <td><h6 class="mx-5">Updated At:    </h6><p class="deliveredDate mx-5" id="deliveredDate"> {{order.deliveredAt}}</p></td>
+                <td><h6> Amount paid:    </h6><p>   {{ order.totalAmount}}₹</p></td>
+                </table>
+              </div>
+            </div>
+
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<script src="/cart.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{>user-footer}}

@@ -48,28 +48,59 @@
 
                 <!-- Order Status -->  
 
-                <td ><div class="form-group">
-                    <label for="exampleFormControlSelect1">Status</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option selected>{{#if isShipped}}<p>Shipped</p>{{else}}<p>{{orderStatus}}</p>{{/if}}</option>
-                        <option id="placed">Placed</option>
-                        <option id="confirmed">Confirmed</option>
-                        <option id="shipped">Shipped</option>
-                        <option id="arivingToday">Arriving Today</option>
-                    </select>
-                    </div> 
+                <td >
+                    <div class="dropdown">
+                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                       {{orderStatus}}
+                     </button>
+                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                       <li>
+                         <form id="order-form" method="POST" action="/admin/setOrderStatus">
+                           <input type="hidden" name="Sid" value="{{_id}}">
+                           <input type="hidden" name="status" value="Confirmed">
+                           <button type="submit" class="dropdown-item">Confirmed</button>
+                         </form>
+                       </li>
+                       <li>
+                         <form id="order-form" method="POST" action="/admin/setOrderStatus">
+                           <input type="hidden" name="Sid" value="{{_id}}">
+                           <input type="hidden" name="status" value="Shipped">
+                           <button type="submit" class="dropdown-item">Shipped</button>
+                         </form>
+                        </li>
+                       <li>
+                        <form id="order-form" method="POST" action="/admin/setOrderStatus">
+                           <input type="hidden" name="Sid" value="{{_id}}">
+                           <input type="hidden" name="status" value="Arriving Today">
+                           <button type="submit" class="dropdown-item">Arriving Today</button>
+                        </form>
+                        </li>
+                     </ul>
+                     <div><p style="color: red;" id="messages"></p></div>
+                     <p style="color: red;" id="message"></p></div>
+                    </div>
                 </td >  
 
                 <!-- Return Approval Status -->  
 
                 <td >
                 <a href="/admin/viewOrder/{{_id}}" class="text-primary">view Order<i class="fa fa-eye" aria-hidden="true"></i></a><br>
+                {{#if (and isDelivered (eq inReturn false))}}
                 <button type = "button" class = "btn btn-success btn-sm " > Procesed </button>
-                <button type = "button" class = "btn btn-success btn-sm deliver" id="deliver" data-url={{_id}} > Deliver </button>
+                {{else}}
+                {{#if (and inReturn (eq returned false))}}
                 <button type = "button" class = "btn btn-primary btn-sm return" id="ApproveReturn" data-url={{_id}} >Approve Return </button>
-                <p>Order returned </p>
-
+                {{else}}
+                {{#if (and returned inReturn)}}
+                <p><h6>Order returned</h6> </p>
+                {{else}}
+                <button type = "button" class = "btn btn-success btn-sm deliver" id="deliver" data-url={{_id}} > Deliver </button>
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                <div>
                 </td > 
+                
             </tr > 
             {{/each}} 
             {{else}}

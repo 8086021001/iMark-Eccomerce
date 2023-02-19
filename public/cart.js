@@ -2,7 +2,7 @@ let cartCard = document.querySelector('.cart-items-container');
 if(cartCard) {
     
     cartCard.addEventListener('click' , (e) => {
-        console.log(e.target);
+
         if(e.target.classList.contains('delete-btn')) {
             console.log('Hi')
             removeFromCart(e);
@@ -10,11 +10,8 @@ if(cartCard) {
         else if(e.target.classList.contains('quantity-up')) {
             incQuantity(e);
         } 
-        
         else if(e.target.classList.contains('quantity-down')) {
-            
-                decQuantity(e);
-                
+                decQuantity(e);   
         }    
     })
 }
@@ -31,9 +28,6 @@ if(cartCard) {
                     'Content-Type' : 'application/json'
                     }
                 });
-
-
-                
     const redirectPath = await res.json();
     window.location.href = redirectPath.redirect;
 
@@ -58,6 +52,8 @@ async function incQuantity(e) {
                     'Content-Type' : 'application/json'
                     }
                 });
+
+    
                 
     const redirectPath = await res.json();
     window.location.href = redirectPath.redirect;
@@ -67,32 +63,36 @@ async function incQuantity(e) {
 
 async function decQuantity(e) {
     const productId = e.target.dataset.url;
-    console.log(productId);
     const url = `http://localhost:4000/cart/dec/${productId}` ;
-    console.log(url);
+    
+    let quantityValue  =  e.target.parentNode.querySelector('#form1').value
+
     const res = await fetch(url, {
                     method: 'put',
                     credentials: "same-origin",
                     headers: {
                     'Content-Type' : 'application/json'
-                    }
-                });
-                
-    // if(e.target.parentNode.querySelector('#form1').value == 1); {
-    //    e.target.disabled = true;
-    // }
-
-
+                    },
+                    body:JSON.stringify({quantValue:quantityValue})
+                });            
     const redirectPath = await res.json();
-    window.location.href = redirectPath.redirect;
+    console.log(redirectPath);
+    if(redirectPath.redirect){
+        window.location.href=redirectPath.redirect
+    }else{
+        document.querySelector('.total_amount').textContent = redirectPath.totalAmount;
+        e.target.parentNode.querySelector('#form1').value = redirectPath.quantity;
+}
 }
 
-
-///error message timing
-// document.addEventListener('DOMContentLoaded', function() {
-//     const message = document.getElementById('errormessagecart');
-//     message.style.display = 'block';
-//     setTimeout(function() {
-//       message.style.display = 'none';
-//     }, 2000);
-//   });
+let dateFormater = document.querySelectorAll("#deliveredDate")
+if(dateFormater){
+    for (let index = 0; index < dateFormater.length; index++) {
+        const element = dateFormater[index];
+        let date = new Date(element.textContent.replace('IST', ''));
+        let day = date.getDate();
+        let month = date.getMonth()+1;
+        let year = date.getFullYear();
+        element.textContent =  day+"-"+month+"-"+ year ;
+    }
+}

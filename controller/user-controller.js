@@ -249,9 +249,52 @@ const getViewProduct = async(req,res)=>{
 }
 
 
+//user Wallet
+const getUserWallet = async(req,res)=>{
+  try {
+    let Id = req.session.userId
+    let User = await user.find({_id:Id}).populate('wallet.transactions.order')
+    let balance = User[0].wallet.balance;
+    let trans =User[0].wallet.transactions;
+    res.render('userWallet',{balance:balance,transactions:trans})
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+//user Profile
+const getUserProfile = async(req,res)=>{
+  try {
+    let id = req.session.userId;
+    let User = await user.findById(id)
+    res.render('userProfile',{User})
+  } catch (error) {
+    console.log(error)
+  }
+}
+//update user Address
+const updateUseraddress = async(req,res)=>{
+  try {
+    let Id =req.session.userId
+    let addId =req.params.id
+    console.log(addId)
+    let User = await user.findById(Id)
+    console.log(User.address);
+    console.log(addId)
+    let index = User.address.findIndex((item) => {
+      return item._id.valueOf() == addId
+    })
+    console.log(index)
 
 
 
+  } catch (error) {
+    
+  }
+
+}
 
 module.exports = {userLogin,userSignUp,getSignin,getSignup,
-  getLanding,getOtp,resendOtp,getHome,logout,getViewProduct,getShop,getCatProduct,getFeatured}
+  getLanding,getOtp,resendOtp,getHome,logout,getViewProduct,getShop,getCatProduct,
+  getFeatured,getUserWallet,getUserProfile,updateUseraddress}

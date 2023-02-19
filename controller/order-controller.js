@@ -10,6 +10,8 @@ const coupon = require('../model/coupon')
 const paypal = require("@paypal/checkout-server-sdk");
 const { parse } = require('handlebars');
 require("dotenv").config()
+const moment = require('moment');
+
 
 
 
@@ -33,6 +35,7 @@ const paypalClient = new paypal.core.PayPalHttpClient(
 
 
 const getUserOrder = async(req,res)=>{
+    
     try {
         const id = req.session.userId
         const userData = await User.find({_id:id}).populate('cart.proId')
@@ -41,21 +44,24 @@ const getUserOrder = async(req,res)=>{
         const totalQuantity = prodData.reduce((total , prod) => {
             return total+prod.quantity;
          } , 0);
-
+         
         let totalPrice = 0;
+
+        let walletBalance = userData[0].wallet.balance;
         for (let i = 0; i < prodData.length; i++) {
           let product = prodData[i].proId;
           if (product.Poffer !== 0) {
-            totalPrice += product.Poffer;
+             totalPrice += product.Poffer;
           } else {
-            totalPrice += product.price;
+             totalPrice += product.price;
           }
         }
-        totalPrice.toFixed(2)
-         res.render('billing',{paypal:process.env.Paypal_clientId,totquant:totalQuantity,totprice:totalPrice,add:addressDat})
-
+        const number = parseFloat(totalPrice);
+        let price = parseInt(number); // Convert the number to an integer
+         res.render('billing',{paypal:process.env.Paypal_clientId,totquant:totalQuantity,totprice:price,add:addressDat,walBal:walletBalance})
 
     } catch (error) {
+
         console.log(error)
     }
 
@@ -160,7 +166,27 @@ console.log(items)
             await newOrder.save();
             console.log('order saved in db');
              res.json({myOrder: myOrder , redirect: 'http://localhost:4000/order/success'})
-        } else if(items){
+        }else if(paymentMethod === 'Wallet'){
+            const newOrder = await Order.create({
+                shippingInfo: shippingAddres,
+                user: user._id,
+                orderItems: user.cart,
+                totalAmount: totalAmount,
+                orderStatus: orderStatus,
+                paymentMode: paymentMethod,
+            })
+            console.log(newOrder);
+
+
+            await newOrder.save();
+
+            user.wallet.balance -= totalAmount;
+            user.cart.splice(0);
+            await user.save({ validateBeforeSave: false });
+           
+            res.json({ redirect: '/order/success' });
+
+        }else if(items){
             console.log('In paypal')
             let Paypalindex = user.address.findIndex((item) => {
                 return item._id.valueOf() == items[3].shippingInfo;
@@ -213,35 +239,36 @@ console.log(items)
             } catch (error) {
                 console.log(error)
             }
-        }}catch (e) {
+        }
+    }catch (e) {
             console.log(e);
         }
     } 
 
-
+//user cancel order
 const cancelOrder = async (req,res)=>{
     try {
         let orderId = req.params.orderId
-        const orderDetails = await Order.find({_id:orderId,isShipped:false},
-            {$set:{isCancelled:true}},{new:true},
-            (err,orderDetails)=>{
-                if(err){
-                    console.log(err)
-                }else if(!orderDetails){
-                    let mes = "Product Shipped, Please return your order after receiving."
-                    res.json({redirect: '/order/success',mes})
-                }else{
-                    let productUpdate = async function(proId,quantity){
-                        const Product = await product.find({_id: proId});
-                        Product[0].inventory = Product[0].inventory + quantity;
-                        await Product[0].save();
-                   }
-                   orderDetails[0].orderItems.forEach((item)=> {
-                       productUpdate(item.proId,item.quantity)
-                   })
-                   res.json({redirect: '/order/success'})
-                }
-            })
+        const orderDetails = await Order.find({_id:orderId})
+
+        if(orderDetails[0].isShipped==false){
+            orderDetails[0].isCancelled = true;
+            orderDetails[0].save();
+
+            let productUpdate = async function(proId,quantity){
+                const Product = await product.find({_id: proId});
+                Product[0].inventory = Product[0].inventory + quantity;
+                await Product[0].save();
+           }
+           orderDetails[0].orderItems.forEach((item)=> {
+               productUpdate(item.proId,item.quantity)
+           })
+           res.json({redirect: '/order/success'})
+        }else{
+            let msg = 'Order shipped, please dilever it and return.'
+            res.json({messag:msg})
+        }
+
     } catch (error) {
         console.log(error)
     }
@@ -265,6 +292,7 @@ const applyingCoupon = async (req,res)=>{
                 console.log(newAmount)
 
                 let message = 'Coupon applied'
+                newAmount.toFixed(1)
                 res.json({totalAmount:newAmount,msg:message})
             }else{
                 let message = 'Coupon expired'
@@ -284,24 +312,36 @@ const applyingCoupon = async (req,res)=>{
 
 //user returning order
 
-const returnOrder =async(req,res)=>{
+const returnOrder = async (req, res) => {
     try {
-        let id = req.params._id
-        let ordered = await Order.find({_id:id})
-        let shipped = ordered[0].isShipped
-        console.log(shipped)
-        if(!shipped){
-            let order = await Order.findOneAndUpdate({_id:id},{$set:{inReturn:true}})
-            res.json({redirect:"/order/success"})
-        }else{
-            let message = 'Order shipped, please return the order'
-            res.json({message})
+      const id = req.params._id;
+      const ordered = await Order.find({ _id: id });
+      const deliveryDate = ordered[0].deliveredAt;
+  
+      const deliveredDate = moment(deliveryDate);
+      const threeDaysFromThis = moment().add(3, 'days');
+      
+  
+      if (deliveredDate.isBetween(moment().subtract(1, 'day'), threeDaysFromThis)) {
+        console.log('Hi');
+        if (ordered[0].isDelivered) {
+            console.log(ordered[0].isDelivered)
+          ordered[0].inReturn = true;
+          await ordered[0].save(); // Use "await" to wait for the save operation to complete
+          const mesg = 'Waiting for Approval';
+          res.json({ redirect: '/order/success',message:mesg });
+        } else {
+          res.json({ redirect: '/order/success' });
         }
-
+      } else {
+        const msg = 'Return possible only within 3 days after delivery.';
+        res.json({ redirect: '/order/success', messag: msg });
+      }
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
-}
+  };
+  
 
 
 

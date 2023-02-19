@@ -13,7 +13,6 @@ const lastName = document.getElementById('LastName')
 const otp = document.getElementById('otp')
 const confirm_password = document.getElementById('confirm_password')
 const otpForm = document.getElementById
-console.log(form);
 
 if(form){
 form.addEventListener('submit',(e)=>{
