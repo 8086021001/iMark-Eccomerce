@@ -278,23 +278,54 @@ const updateUseraddress = async(req,res)=>{
   try {
     let Id =req.session.userId
     let addId =req.params.id
-    console.log(addId)
+    let {houseAddress,streetAddress,city,state,zipCode} = req.body
     let User = await user.findById(Id)
-    console.log(User.address);
-    console.log(addId)
     let index = User.address.findIndex((item) => {
       return item._id.valueOf() == addId
     })
-    console.log(index)
+     User.address[index].houseName = houseAddress;
+     User.address[index].address = streetAddress
+     User.address[index].city = city
+     User.address[index].state = state
+     User.address[index].zip = zipCode
 
-
+     await User.save()
+     res.redirect('/profile')
 
   } catch (error) {
+    console.log(error)
     
   }
 
 }
+//update user data password
+
+
+const UpdateUserProfile = async(req, res) => {
+  const userId = req.session.userId; 
+  let User = await user.findById(userId)
+  console.log(req.body)
+  const {firstName, lastName, email, password } = req.body; 
+
+  if (password !== User.password) {
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    User.firstName = firstName;
+    User.lastName = lastName;
+    User.email = email;
+    User.password = hashedPassword;
+
+    await User.save()
+   res.redirect('/profile');
+
+  } else {
+    User.firstName = firstName;
+    User.lastName = lastName;
+    User.email = email;
+    await User.save()
+    res.redirect('/profile');
+  }
+}
 
 module.exports = {userLogin,userSignUp,getSignin,getSignup,
   getLanding,getOtp,resendOtp,getHome,logout,getViewProduct,getShop,getCatProduct,
-  getFeatured,getUserWallet,getUserProfile,updateUseraddress}
+  getFeatured,getUserWallet,getUserProfile,updateUseraddress,UpdateUserProfile}

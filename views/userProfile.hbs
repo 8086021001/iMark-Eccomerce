@@ -58,50 +58,47 @@
 
         <div class="col-md-9">
             <div>
-                {{#each User.address}}
-                <div class="card  col-md-7 my-4 mx-5 exaddress">
-                    
-                    <div class="p-2" >
-                        <h5>Address</h5>
-                       <div class="row d-flex justify-content-center">
-                       <p>{{address}},City:{{city}},State: {{sate}},Zip Code: {{zip}} </p>
-                       {{!-- <a class="col-md-3 btn btn-primary" href="{{_id}}">Update</a> --}}
-                       <button type="button" class="btn btn-primary col-md-3" data-bs-toggle="collapse" data-bs-target="#updateAddressForm" aria-expanded="false" aria-controls="updateAddressForm">
-                                 Update Address
-                        </button>
-                        <div class="collapse" id="updateAddressForm">
-                      <div class="card card-body">
-                        <form class="m-5" action="/update/useraddress/{{_id}}" method="POST">houseName
-                        <div class="mb-3">
-                            <label for="streetAddress" class="form-label">House Name</label>
-                            <input type="text" class="form-control" id="streetAddress" name="streetAddress" placeholder="{{houseName}}">
-                          </div>
-                          <div class="mb-3">
-                            <label for="streetAddress" class="form-label">Street Address</label>
-                            <input type="text" class="form-control" id="streetAddress" name="streetAddress" placeholder="{{address}}">
-                          </div>
-                          <div class="mb-3">
-                            <label for="city" class="form-label">City</label>
-                            <input type="text" class="form-control" id="city" name="city" placeholder="{{city}}">
-                          </div>
-                          <div class="mb-3">
-                            <label for="state" class="form-label">State</label>
-                            <input type="text" class="form-control" id="state" name="state" placeholder="{{state}}">
-                          </div>
-                          <div class="mb-3">
-                            <label for="zipCode" class="form-label">Zip Code</label>
-                            <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="{{zip}}">
-                          </div>
-                          <button type="submit" class="btn btn-primary">Save Changes</button>
-                        </form>
-                      </div>
-                    </div>
-
-                       </div>
-                    </div>
-                   
-                    </div>
-                     {{/each}}
+                
+{{#each User.address}}
+  <div class="card col-md-7 my-4 mx-5 exaddress">
+    <div class="p-2">
+      <h5>Address</h5>
+      <div class="row d-flex justify-content-center">
+        <p>{{address}}, City: {{city}}, State: {{state}}, Zip Code: {{zip}}</p>
+      </div>
+      <button type="button" class="btn btn-primary col-md-6" data-bs-toggle="collapse" data-bs-target="#updateAddressForm{{@index}}" aria-expanded="false" aria-controls="updateAddressForm{{@index}}">
+        Update Address
+      </button>
+      <div class="collapse" id="updateAddressForm{{@index}}">
+        <div class="card card-body">
+          <form class="m-5" action="/update/useraddress/{{_id}}" method="POST">
+            <div class="mb-3">
+              <label for="houseAddress{{@index}}" class="form-label">House Name</label>
+              <input type="text" class="form-control" id="houseAddress{{@index}}" name="houseAddress" placeholder="House" value="{{houseName}}" required>
+            </div>
+            <div class="mb-3">
+              <label for="streetAddress{{@index}}" class="form-label">Street Address</label>
+              <input type="text" class="form-control" id="streetAddress{{@index}}" name="streetAddress" placeholder="Address" value="{{address}}" required>
+            </div>
+            <div class="mb-3">
+              <label for="city{{@index}}" class="form-label">City</label>
+              <input type="text" class="form-control" id="city{{@index}}" name="city" placeholder="City" value="{{city}}" required>
+            </div>
+            <div class="mb-3">
+              <label for="state{{@index}}" class="form-label">State</label>
+              <input type="text" class="form-control" id="state{{@index}}" name="state" placeholder="State" value="{{state}}" required>
+            </div>
+            <div class="mb-3">
+              <label for="zipCode{{@index}}" class="form-label">Zip Code</label>
+              <input type="text" class="form-control" id="zipCode{{@index}}" name="zipCode" placeholder="Zip" value="{{zip}}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/each}}
                      
 
 
@@ -114,22 +111,26 @@
             <div class="tab-pane fade" id="settings">
               <h1>Settings</h1>
               <div class="col-md-6 m-5">
-              <form action="/update/userProfile" method="post" class="userProfile">
+              <form action="/update/userProfile" method="POST" class="userProfile">
                   <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                    <label for="name" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="Fname" name="firstName" placeholder="Enter your first name" value="{{User.firstName}}" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="Sname" name="lastName" placeholder="Enter your second name" value="{{User.lastName}}" required>
                   </div>
                   <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email address">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address" value="{{User.email}}" required>
                   </div>
                   <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" value="{{User.password}}" required>
                   </div>
                   <div class="mb-3">
                     <label for="confirm-password" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirm-password" placeholder="Confirm your password">
+                    <input type="password" class="form-control" id="confirm-password" name="Confirmpassword" placeholder="Confirm your password" value="{{User.password}}" required>
                   </div>
                   <button type="submit" class="btn btn-primary">Update Profile</button>
                 </form>
@@ -141,6 +142,7 @@
     </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+    <script src="/userProfile.js"></script>
   </body>
 
     {{>user-footer}}

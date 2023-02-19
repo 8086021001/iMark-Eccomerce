@@ -7,7 +7,7 @@ const {userAuthenticated} = require('../middlewares/userAuth')
 const {userLogin,userSignUp,getSignin,getSignup,
     getLanding,getOtp,resendOtp,getHome,logout,
     getViewProduct,getShop,getCatProduct,getFeatured,getUserWallet,
-    getUserProfile,updateUseraddress} = require('../controller/user-controller');
+    getUserProfile,updateUseraddress,UpdateUserProfile} = require('../controller/user-controller');
 const {addToCart,getCart,cartDelete,cartIncrement,cartDecrement} =require('../controller/cart-controller')
 
 router.get('/signup',getSignup)
@@ -31,6 +31,7 @@ router.route('/signin').post(userLogin)
 router.route('/otp').post(getOtp)
 router.route('/otp/resend').post(resendOtp)
 router.post('/update/useraddress/:id',updateUseraddress)
+router.post('/update/userProfile',UpdateUserProfile)
 
 router.delete('/cart/:_id',cartDelete)
 
