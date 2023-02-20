@@ -17,20 +17,60 @@
 
     </head>
 
-
-    <body>
-      <div class="container">
-        <h1>Button Popup Example</h1>
-        <p>Hover over the button below to see the popup.</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="This is a popover on hover.">Hover Me</button>
-      </div>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#" onclick="changeActiveCategory(event, 'category1')">Category 1</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="changeActiveCategory(event, 'category2')">Category 2</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="changeActiveCategory(event, 'category3')">Category 3</a>
+            </li>
+          </ul>
+          <hr>
+          <form class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Search</label>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search...">
+                <button class="btn btn-outline-secondary" type="button">Go</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </nav>
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <!-- Main content goes here -->
+      </main>
+    </div>
+  </div>
+  
+  <script>
+  function changeActiveCategory(event, category) {
+    // Prevent the link from navigating to a new page
+    event.preventDefault();
+  
+    // Get all the category links
+    var categoryLinks = document.querySelectorAll('#sidebarMenu .nav-link');
+  
+    // Remove the active class from all the category links
+    for (var i = 0; i < categoryLinks.length; i++) {
+      categoryLinks[i].classList.remove('active');
+    }
+  
+    // Add the active class to the clicked category link
+    event.target.classList.add('active');
+  
+    // TODO: Update the main content based on the selected category
+  }
+  </script>
+  
+  </body>
     
-      <!-- Initialize Popover -->
-      <script>
-        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-          return new Bootstrap.Popover(popoverTriggerEl)
-        })
-      </script>
-    </body>
 </html>

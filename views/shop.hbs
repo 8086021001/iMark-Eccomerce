@@ -1,5 +1,9 @@
+
+
 {{>user-header}}
 {{!-- //navbar --}}
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid ">
     <div class="collapse navbar-collapse ml-auto text-cente d-flex justify-content-between" id="navbarNav">
@@ -33,38 +37,62 @@
 {{!-- navbar end --}}
 
 
-      <!-- inner page section -->
+               <!-- inner page section -->
       <section class="inner_page_head">
-         <div class="container_fuild">
+         <div class="container-fluid ">
             <div class="row">
                <div class="d-flex align-items-center justify-content-center col-md-12 allProducts ">
                   <div class="full">
                      <h3 class="glow" >All Products </h3>
                   </div>
-                       {{!-- <h5>__iMark__ Presents you, the favourite collections for your favourite ones</h5> --}}
                </div>
             </div>
          </div>
       </section>
       <!-- end inner page section -->
 
-            
-      <!-- product section -->
-      
-      <section class="product_section layout_padding">
+  
+
+                <!-- product section -->
+      <div>
+
+<div class="container-fluid ">
+  <div class="row">
+<div class="col-md-2" style="float:left; position: relative;">
+  <div class="sidebar bg-light h-100 w-100 px-2" style="position: absolute; top: 0; left: 0; right: 0; bottom: auto; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+   
+    <form class="mb-3 searchForm" action="/search" method="get" >
+      <input class="form-control" type="text" placeholder="Search" name="search">
+      <button class="btn btn-primary mt-2 w-100" type="submit">Search</button>
+    </form>
+    <h5 class="mb-3 text-white ">Categories</h5>
+    <ul class="list-unstyled">
+      {{#each cat}}
+      <li>
+        <a href="/shop/{{name}}" class="sidebar-button">{{name}}</a>
+      </li> 
+      {{/each}}
+   
+    </ul>
+
+
+  </div>
+</div>
+    <div class="col-md-10 bg-muted" style="float:left;">
+
+      <section class="product_section layout_padding ">
          {{#if prod}}
          <div class="container">
-            <div class="heading_container heading_center  d-flex justify-content-center m-5">
+            <div class="heading_container heading_center  d-flex justify-content-center my-5">
                <h4 class="underlinedec">
-                  <span><u>hallmark of excellence, design and quality.</u> 
-
+                  <span><u>Hallmark of excellence, design and quality.</u> 
                      </span>
                </h4>
             </div>
             <div>
-            <div class="row d-flex jsutify-content-center">  
+            <div class="productList row d-flex jsutify-content-center">  
                {{#each prod}}             
-               <div class="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center">
+               <div class="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center m-5">
                               
                   <div class="box h-100">  
                      <div class="option_container">
@@ -104,5 +132,16 @@
       </div>
          {{/if}}
       </section>
+    </div>
+  </div>
+</div>
+ 
+
+
+
+<script src="/search.js"></script>
+
+
+
 
 {{>user-footer}}

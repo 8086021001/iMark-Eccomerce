@@ -10,6 +10,7 @@ const banner = require('../model/banner')
 
 
 
+
 const getSignin = (req,res)=>{
   if(req.session.userId) {
     res.redirect('/home')
@@ -60,13 +61,14 @@ const logout = (req,res)=>{
 const getShop = async(req,res)=>{
   try {
     const prodData = await product.find({}).populate('category')
+    const catData =await categories.find({})
     if(prodData.lenth!=0){
       console.log('inside product')
       if(prodData[0].isActive){
         prodData.forEach((Pro,index,array)=>{
           array[index].images = Pro.images.splice(0,1);
         })
-        res.render('shop',{prod:prodData})
+        res.render('shop',{prod:prodData,cat:catData})
       }else{
         res.render('shop')
       }
@@ -98,6 +100,7 @@ const getCatProduct = async(req,res)=>{
     
     const catName = req.params.name
     let prodData = await product.find({}).populate('category')
+    const catData =await categories.find({})
     if(prodData[0].isActive){
       prodData = prodData.filter((prod)=>{
         if(prod.category.name == catName){
@@ -107,7 +110,7 @@ const getCatProduct = async(req,res)=>{
       prodData.forEach((Pro,index,array)=>{
         array[index].images = Pro.images.splice(0,1);
       })
-      res.render('shop',{prod:prodData})
+      res.render('shop',{prod:prodData,cat:catData})
     }
 
   } catch (error) {
@@ -326,6 +329,21 @@ const UpdateUserProfile = async(req, res) => {
   }
 }
 
+//search 
+const searchproducts =async(req,res)=>{
+  try {
+    const element = req.query.search;
+    console.log(element)
+    const regex = new RegExp(element, 'i');
+    const prod = await product.find({ name: regex })
+    res.json({products:prod});
+  
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
 module.exports = {userLogin,userSignUp,getSignin,getSignup,
   getLanding,getOtp,resendOtp,getHome,logout,getViewProduct,getShop,getCatProduct,
-  getFeatured,getUserWallet,getUserProfile,updateUseraddress,UpdateUserProfile}
+  getFeatured,getUserWallet,getUserProfile,updateUseraddress,UpdateUserProfile,searchproducts}

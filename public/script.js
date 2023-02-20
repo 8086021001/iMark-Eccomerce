@@ -1,9 +1,4 @@
-//carousel
-// $('.carousel').carousel({
-//     interval: 2000
-//   })
 
-//signUp
 const form = document.getElementById("form")
 const email = document.getElementById('Email')
 const password = document.getElementById('Password')
