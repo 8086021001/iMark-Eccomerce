@@ -61,12 +61,12 @@ const deleteCategory = async (req, res) =>{
     await category.findByIdAndRemove(id)
     .then((category)=>{        
       if(category){
-        return res.status(200).json({redirect:"http://localhost:4000/admin/category"})
+        return res.status(200).json({redirect:"/admin/category"})
       }else{
-        return res.status(404).json({redirect:"http://localhost:4000/admin/category"})
+        return res.status(404).json({redirect:"/admin/category"})
       }
     }).catch(err=>{
-      return res.status(400).json({redirect:"http://localhost:4000/admin/category"})
+      return res.status(400).json({redirect:"/admin/category"})
     })
     
   } catch (error) {

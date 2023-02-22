@@ -24,7 +24,7 @@ if(prodData){
 function delProduct(e){
     console.log(e.target.dataset.url)
     const proId = e.target.dataset.url
-    const url = 'http://localhost:4000/admin/product/delete/'+proId
+    const url = '/admin/product/delete/'+proId
     const id=`${proId}`
     fetch(url,{
         method: 'delete',
@@ -42,7 +42,7 @@ function delProduct(e){
 function removeProduct(e){
     console.log(e.target.dataset.url)
     const proId = e.target.dataset.url
-    const url = 'http://localhost:4000/admin/product/remove/'+proId
+    const url = '/admin/product/remove/'+proId
     const id=`${proId}`
     fetch(url,{
         method: 'PATCH',
@@ -63,7 +63,7 @@ function removeProduct(e){
 
 // function ediProduct(pid){
 //     console.log(pid)
-//     const url = 'http://localhost:4000/admin/product/getEdit/'+pid
+//     const url = '/admin/product/getEdit/'+pid
 //     const id=`${pid}`
 //     fetch(url,{
 //         method: 'put',
@@ -170,7 +170,7 @@ if(productUpdateForm) {
 // }
 
 function updateProduct(uid,updateFormData){
-    const url = 'http://localhost:4000/admin/product/edit/'+uid
+    const url = '/admin/product/edit/'+uid
     console.log(updateFormData);
     fetch(url,{
         method: 'put',

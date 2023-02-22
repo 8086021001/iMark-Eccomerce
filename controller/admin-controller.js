@@ -146,7 +146,7 @@ const blockUser = async (req, res) => {
                 }
             })
             req.session.userId = null
-            return res.json({redirect: "http://localhost:4000/admin/users"})
+            return res.json({redirect: "/admin/users"})
         } catch (error) {
             console.log(error)
         }
@@ -159,7 +159,7 @@ const blockUser = async (req, res) => {
                     Action: true
                 }
             })
-            return res.json({redirect: "http://localhost:4000/admin/users"})
+            return res.json({redirect: "/admin/users"})
         } catch (error) {}
     }
 }
@@ -303,7 +303,7 @@ const browser = await puppeteer.launch();
 const page = await browser.newPage();
 
 // Website URL to export as pdf
-const website_url = 'http://localhost:4000/admin/getSalesReport';
+const website_url = '/admin/getSalesReport';
 
 // Open URL in current page
 await page.goto(website_url, { waitUntil: 'networkidle0' });
@@ -338,7 +338,7 @@ const browser = await puppeteer.launch();
 const page = await browser.newPage();
 
 // Website URL to export as pdf
-const website_url = 'http://localhost:4000/admin/getProductSalesReport';
+const website_url = '/admin/getProductSalesReport';
 
 // Open URL in current page
 await page.goto(website_url, { waitUntil: 'networkidle0' });

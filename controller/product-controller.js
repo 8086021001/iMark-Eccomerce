@@ -77,7 +77,7 @@ const editProduct = async(req,res) =>{
           description:req.params.description,
         }})
         return res.json({
-          redirect:"http://localhost:4000/admin/products"
+          redirect:"/admin/products"
         })
     } catch (error) {
       console.log(error)
@@ -96,12 +96,12 @@ const editProduct = async(req,res) =>{
         await product.findByIdAndRemove(id)     
         .then((product)=>{        
           if(product){          
-            return res.status(200).json({redirect:"http://localhost:4000/admin/products"})
+            return res.status(200).json({redirect:"/admin/products"})
           }else{
-            return res.status(404).json({redirect:"http://localhost:4000/admin/products"})
+            return res.status(404).json({redirect:"/admin/products"})
           }
         }).catch(err=>{
-          return res.status(400).json({redirect:"http://localhost:4000/admin/products"})
+          return res.status(400).json({redirect:"/admin/products"})
         })
         
       } catch (error) {
@@ -127,7 +127,7 @@ const editProduct = async(req,res) =>{
             isActive:true
           }  )
         }
-        return res.status(200).json({redirect:"http://localhost:4000/admin/products"})
+        return res.status(200).json({redirect:"/admin/products"})
         
       }catch (error) {
         console.log(error)

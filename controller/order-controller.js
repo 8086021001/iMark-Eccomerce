@@ -165,7 +165,7 @@ console.log(items)
             await user.save({ validateBeforeSave: false });
             await newOrder.save();
             console.log('order saved in db');
-             res.json({myOrder: myOrder , redirect: 'http://localhost:4000/order/success'})
+             res.json({myOrder: myOrder , redirect: '/order/success'})
         }else if(paymentMethod === 'Wallet'){
             const newOrder = await Order.create({
                 shippingInfo: shippingAddres,
