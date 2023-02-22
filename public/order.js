@@ -95,7 +95,7 @@ if (razorbtn) {
 
 async function createOrder(e) {
 
-    const url = `http://localhost:4000/order/create`;
+    const url = `/order/create`;
     let methodofPayment;
     if (e.target.classList.contains('cod-button')) {
         methodofPayment = 'cash on delivery'
@@ -155,7 +155,7 @@ if(cancelOrder){
 async function delOrder(e){
     const orderId = e.target.dataset.url 
     console.log(orderId)
-    const url = `http://localhost:4000/order/cancel/${orderId}`
+    const url = `/order/cancel/${orderId}`
     let res =  await  fetch(url,{
         method: 'put',
         headers: {
@@ -182,7 +182,7 @@ async function delOrder(e){
   if(Cbutton){
     Cbutton.addEventListener('click',async ()=>{
       let couponApplied = document.querySelector('#couponcode').value
-      const url = 'http://localhost:4000/order/applycoupon';
+      const url = '/order/applycoupon';
       console.log(url);
       const res = await fetch(url, {
                       method: 'post',
@@ -236,7 +236,7 @@ if(delivOrder){
 
 async function deliverOrder(e){
   let orderId = e.target.dataset.url ;
-  const url = 'http://localhost:4000/admin/order/deliver/'+orderId
+  const url = '/admin/order/deliver/'+orderId
   let res =  await  fetch(url,{
           method: 'put',
           credentials: "same-origin",
@@ -269,7 +269,7 @@ if(retOrder){
 async function returnOrder(e){
   try {
     let orderId = e.target.dataset.url ;
-    const url = 'http://localhost:4000/order/returnOrder/'+orderId
+    const url = '/order/returnOrder/'+orderId
     let res =  await  fetch(url,{
             method: 'put',
             credentials: "same-origin",
@@ -303,7 +303,7 @@ async function approveReturn(e){
   try {
     let orderId = e.target.dataset.url ;
     console.log(orderId)
-    const url = 'http://localhost:4000/admin/approveReturn/'+orderId
+    const url = '/admin/approveReturn/'+orderId
     let res =  await  fetch(url,{
             method: 'put',
             credentials: "same-origin",
@@ -342,7 +342,7 @@ async function createWalletOrder(e){
     let methodofPayment = 'Wallet'
     console.log(document.querySelector('.order-price').textContent)
 
-    const url = `http://localhost:4000/order/create`;
+    const url = `/order/create`;
     const res = await fetch(url, {
       method: 'post',
       credentials: "same-origin",

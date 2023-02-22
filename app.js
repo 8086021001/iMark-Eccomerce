@@ -13,6 +13,7 @@ const MongoStore = require('connect-mongo');
 const adminRoute = require('./routes/admin')
 const orderRoute = require('./routes/order')
 const flash = require('connect-flash');
+const mongoose = require('mongoose');
 
 
 
@@ -30,17 +31,23 @@ app.use(express.json());
 app.use(cookieParser());
 
 //setting session
+// const sessionStore = new MongoStore({
+//     mongooseConnection: mongoose.connection,
+//     collection: 'sessions'
+//   });
 const oneDay = 60*60*24*1000
 app.use(session({
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: oneDay},
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI ,
-        dbName: 'iMark',
-        ttl: 14 * 24 * 60 * 60,
-        autoRemove: 'native',
-        collectionName: 'sessions'})
+  
+    // store: MongoStore.create({ mongoUrl: process.env.MONGO_URI ,
+    //     dbName: 'iMark',
+    //     ttl: 14 * 24 * 60 * 60,
+    //     autoRemove: 'native',
+    //     collectionName: 'sessions'})
 
   }))
   app.use(flash())

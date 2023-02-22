@@ -5,6 +5,7 @@ const product = require('../model/product')
 const session = require('express-session')
 const categories = require('../model/categories')
 const banner = require('../model/banner')
+const { trusted } = require('mongoose')
 
 
 
@@ -60,15 +61,41 @@ const logout = (req,res)=>{
 
 const getShop = async(req,res)=>{
   try {
-    const prodData = await product.find({}).populate('category')
+const perPage = 6;
+const page = 2;
+
+const totalCount = await product.countDocuments({});
+
+const skip = (page - 1) * perPage;
+
+const prodData = await product.find({isActive: true})
+  .populate('category')
+  .skip(skip)
+  .limit(perPage);
+
+const paginationInfo = {
+  currentPage: page,
+  totalPages: Math.ceil(totalCount / perPage),
+  totalCount: totalCount
+};
+let pagenumber = [];
+for(let i=1;i<=paginationInfo.totalPages;i++){
+  pagenumber[i] =i;
+}
+
+
+const result = {
+  pagination: paginationInfo,
+  products: prodData
+};
     const catData =await categories.find({})
     if(prodData.lenth!=0){
-      console.log('inside product')
       if(prodData[0].isActive){
         prodData.forEach((Pro,index,array)=>{
           array[index].images = Pro.images.splice(0,1);
         })
-        res.render('shop',{prod:prodData,cat:catData})
+
+        res.render('shop',{prod:prodData,cat:catData,pagenumber})
       }else{
         res.render('shop')
       }
@@ -344,6 +371,75 @@ const searchproducts =async(req,res)=>{
 
 }
 
+//get next page pagnation
+const getNextPage = async(req,res)=>{
+
+
+  try {
+    let number =req.params.num
+    console.log(number)
+      const num = parseInt(number.match(/\d+/)[0], 10);
+    let perPage = 6;
+    const page = num;
+
+    
+    const totalCount = await product.countDocuments({});
+   let totalPages = Math.ceil(totalCount / perPage)
+
+    
+    const skip = (page - 1) * perPage;
+    if (page === totalPages) {
+      const remainingProducts = totalCount % perPage;
+      if (remainingProducts > 0) {
+
+        perPage = remainingProducts;
+      }
+    }
+    
+    const prodData = await product.find({isActive: true})
+      .populate('category')
+      .skip(skip)
+      .limit(perPage);
+    
+    const paginationInfo = {
+      currentPage: page,
+      totalPages: Math.ceil(totalCount / perPage),
+      totalCount: totalCount
+    };
+    let pagenumber = [];
+    for(let i=1;i<=totalPages;i++){
+      pagenumber[i] =i;
+    }
+    
+    
+    const result = {
+      pagination: paginationInfo,
+      products: prodData
+    };
+
+        const catData =await categories.find({})
+        if(prodData.lenth!=0){
+          if(prodData[0].isActive){
+            prodData.forEach((Pro,index,array)=>{
+              array[index].images = Pro.images.splice(0,1);
+            })
+    
+            res.render('shop',{prod:prodData,cat:catData,pagenumber})
+          }else{
+            res.render('shop')
+          }
+        }
+        else{
+          res.render('shop')
+        }
+        
+      } catch (error) {
+        console.log(error)
+      }
+    
+
+}
+
 module.exports = {userLogin,userSignUp,getSignin,getSignup,
   getLanding,getOtp,resendOtp,getHome,logout,getViewProduct,getShop,getCatProduct,
-  getFeatured,getUserWallet,getUserProfile,updateUseraddress,UpdateUserProfile,searchproducts}
+  getFeatured,getUserWallet,getUserProfile,updateUseraddress,UpdateUserProfile,searchproducts,getNextPage}

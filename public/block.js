@@ -12,7 +12,7 @@ if(userTable){
 function blockUser(e){
     const userId = e.target.dataset.url
     console.log(userId)
-    const url = 'http://localhost:4000/admin/users/block/'+userId
+    const url = '/admin/users/block/'+userId
     console.log(url)
     const id=`${userId}`
 

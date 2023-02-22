@@ -1,16 +1,5 @@
 //Coupon validation
 
-// let errordiv = document.getElementById('hidden')
-// if(errordiv){
-//     errordiv.addEventListener('onload', function() {
-//         const message = document.getElementById('errorMessage');
-//         message.style.display = 'block';
-    
-//         setTimeout(function() {
-//           message.style.display = 'none';
-//         }, 2000);
-//       });
-// }
 
 
 

@@ -19,7 +19,7 @@ if(cartCard) {
 
  async function removeFromCart(e) {
     const productId = e.target.dataset.url;
-    const url = `http://localhost:4000/cart/${productId}` ;
+    const url = `/cart/${productId}` ;
     console.log(url);
     const res = await fetch(url, {
                     method: 'delete',
@@ -43,7 +43,7 @@ if(cartCard) {
 async function incQuantity(e) {
     const productId = e.target.dataset.url;
     console.log(productId);
-    const url = `http://localhost:4000/cart/inc/${productId}` ;
+    const url = `/cart/inc/${productId}` ;
     console.log(url);
     const res = await fetch(url, {
                     method: 'put',
@@ -63,7 +63,7 @@ async function incQuantity(e) {
 
 async function decQuantity(e) {
     const productId = e.target.dataset.url;
-    const url = `http://localhost:4000/cart/dec/${productId}` ;
+    const url = `/cart/dec/${productId}` ;
     
     let quantityValue  =  e.target.parentNode.querySelector('#form1').value
 

@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function deleteCat(event){
     console.log(event.target.dataset.url) ;
     const catId = event.target.dataset.url
-    const url = 'http://localhost:4000/admin/category/delete/'+catId
+    const url = '/admin/category/delete/'+catId
     const id=`${catId}`
 
     fetch(url,{

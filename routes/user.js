@@ -7,7 +7,7 @@ const {userAuthenticated} = require('../middlewares/userAuth')
 const {userLogin,userSignUp,getSignin,getSignup,
     getLanding,getOtp,resendOtp,getHome,logout,
     getViewProduct,getShop,getCatProduct,getFeatured,getUserWallet,
-    getUserProfile,updateUseraddress,UpdateUserProfile,searchproducts} = require('../controller/user-controller');
+    getUserProfile,updateUseraddress,UpdateUserProfile,searchproducts,getNextPage} = require('../controller/user-controller');
 const {addToCart,getCart,cartDelete,cartIncrement,cartDecrement} =require('../controller/cart-controller')
 
 router.get('/signup',getSignup)
@@ -24,6 +24,7 @@ router.get('/featured/:highlights',getFeatured)
 router.get('/user/wallet',getUserWallet)
 router.get('/profile',getUserProfile)
 router.get('/search',searchproducts)
+router.get('/shop/next/:num',getNextPage)
 
 
 
