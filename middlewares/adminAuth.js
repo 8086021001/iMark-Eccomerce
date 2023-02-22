@@ -15,7 +15,6 @@ const adminLogedout = (req,res,next)=>{
     try {
         if(!req.session.adminId){
             res.render('admin-signin')
-            next()
         }else{
             console.log("want to go back to home")
             res.redirect('/admin/admin-home')

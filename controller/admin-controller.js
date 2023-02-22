@@ -3,7 +3,6 @@ const user = require('../model/user')
 const product = require('../model/product')
 const category = require('../model/categories');
 const Order = require('../model/order')
-const {ObjectId} =require('mongoDb')
 const banner = require('../model/banner')
 const puppeteer = require('puppeteer');
 const XLSX = require('xlsx');
@@ -123,7 +122,7 @@ const adminLogin = async (req, res) => {
         if (req.body.password === pass) {
             res.redirect('/admin/admin-home')
         } else {
-            return res.render('admin-signin', {errMessage: `Invalid Password`})
+             res.render('admin-signin', {errMessage: `Invalid Password`})
         }
     } else {
         res.render('admin-signin', {errMessage: `Invalid Credentials`})
@@ -331,13 +330,10 @@ await browser.close();
 
 const downloadProductReport = async (req,res)=>{
     try {
-                // Create a browser instance
 const browser = await puppeteer.launch();
 
-// Create a new page
 const page = await browser.newPage();
 
-// Website URL to export as pdf
 const website_url = '/admin/getProductSalesReport';
 
 // Open URL in current page
