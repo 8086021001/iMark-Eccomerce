@@ -24,6 +24,7 @@ const addCategory = async (req, res) =>{
     let images = []
     for(key in req.files){
       const imPath = req.files[key].path
+      // const path = imPath.substring(imPath.lastIndexOf("/")-8);
       const path = imPath.substring(imPath.lastIndexOf("\\")-8);
       images.push(path);
     }

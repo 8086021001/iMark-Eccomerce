@@ -6,8 +6,8 @@ const Order = require('../model/order')
 const banner = require('../model/banner')
 const puppeteer = require('puppeteer');
 const XLSX = require('xlsx');
-const coupon = require('../model/coupon')
-const {ObjectId} = require('MongoDB')
+const coupon = require('../model/coupon');
+const  mongoose  = require('mongoose');
 
 
 
@@ -298,12 +298,14 @@ const downloadReport = async (req,res)=>{
     try {
         // Create a browser instance
 const browser = await puppeteer.launch();
+// const browser = await puppeteer.launch({executablePath:'/usr/bin/chromium-browser'});
 
 // Create a new page
 const page = await browser.newPage();
 
 // Website URL to export as pdf
 const website_url = '/admin/getSalesReport';
+// const website_url = 'https://imark.shop/admin/getSalesReport';
 
 // Open URL in current page
 await page.goto(website_url, { waitUntil: 'networkidle0' });
@@ -332,8 +334,11 @@ await browser.close();
 const downloadProductReport = async (req,res)=>{
     try {
 const browser = await puppeteer.launch();
+// const browser = await puppeteer.launch({executablePath:'/usr/bin/chromium-browser'});
 
 const page = await browser.newPage();
+
+// const website_url = 'https://imark.shop/admin/getProductSalesReport';
 
 const website_url = '/admin/getProductSalesReport';
 
@@ -592,7 +597,7 @@ const viewOrder =async (req,res)=>{
         let order = await Order.aggregate([
             {
             $match:{
-                _id: ObjectId(id)
+                _id: mongoose.Types.ObjectId(id)
             }
         },{
             $unwind:{

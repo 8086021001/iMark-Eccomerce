@@ -11,7 +11,7 @@ const paypal = require("@paypal/checkout-server-sdk");
 const { parse } = require('handlebars');
 require("dotenv").config()
 const moment = require('moment');
-const {ObjectId} = require('MongoDB')
+const  mongoose  = require('mongoose');
 
 
 
@@ -97,7 +97,7 @@ const getOrderSuccess = async (req,res)=>{
         const id= req.session.userId;
         const orderDetails = await Order.aggregate([
                 {
-                  $match: { user: ObjectId(id) }
+                  $match: {user:mongoose.Types.ObjectId(id)}
                 },
                 {
                   $unwind: { path: "$orderItems" }
@@ -128,6 +128,7 @@ const getOrderSuccess = async (req,res)=>{
                 }
               
         ])
+        console.log(orderDetails)
         const order = orderDetails;
         if(order){
             res.render('orderSucess',{order: order})
