@@ -37,11 +37,11 @@
                     </td>
                     <td>
                         {{#if isActive }}
-                         <a href="#" class="btn btn-danger btn-sm" data-url={{_id}} >Deactivate</a>
+                         <button type="submit" class="btn btn-danger btn-sm" onclick="couponAction(event)" data-url={{_id}} >Deactivate</button>
                         {{else}}
-                        <a href="#" class="btn btn-success btn-sm" data-url={{_id}} >Activate</a>
+                        <button type="submit"  class="btn btn-success btn-sm" onclick="couponAction(event)" data-url={{_id}} >Activate</button>
                         {{/if}}
-                        <a href="#" class="btn btn-danger btn-sm" data-url={{_id}}>Delete</a>
+                        <button type="submit"  class="btn btn-danger btn-sm" id="delCoupon" data-url={{_id}}>Delete</button>
                     </td>
 
                 </tr>

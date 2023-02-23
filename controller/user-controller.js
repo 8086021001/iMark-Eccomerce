@@ -26,8 +26,24 @@ const getSignup= (req,res)=>{
     res.render('signUp')
   }
 }
-const getLanding = (req,res)=>{
-    res.render('landing')
+const getLanding = async(req,res)=>{
+  try {
+    const proData = await product.find({$and: [{highlights:{$exists:true,$nin:[""]}},{isActive:{$exists:true}}]}).populate('category')
+    const catData = await categories.find({})
+    const banners = await banner.find()
+
+    if(proData.length!=0||catData.length!=0||banners.length!=0){
+        proData.forEach((product, index, array)=>{
+          array[index].images = product.images.splice(0,1);
+          })
+        }
+        res.render('landing',{bannerData:banners,categories:catData,prod:proData,})
+
+    
+  } catch (error) {
+    console.log(error);
+    
+  }
 }
 
 const getHome = async(req,res)=>{

@@ -1,6 +1,3 @@
-//Coupon validation
-
-
 
 
   // changing the date format
@@ -37,3 +34,58 @@ if(Cform){
         }
     })
 }
+
+
+
+//delete coupon
+
+let delcoupon =document.querySelectorAll('#delCoupon')
+if(delcoupon){ 
+    delcoupon.forEach((delbut)=>{
+        delbut.addEventListener("click", (e) =>{
+        deleteCoupon(e);
+    })
+    }) 
+  }
+  async function deleteCoupon(e){
+    const cId = e.target.dataset.url 
+    const url = `/admin/delCoupon/${cId}`
+    let res =  await  fetch(url,{
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        cache: "no-cache", 
+    })
+    const response = await res.json();
+    if(response.redirect){
+
+        window.location.href = response.redirect;
+
+    }
+}
+
+// coupon action
+async function couponAction(e){
+    try {
+        const cId = e.target.dataset.url 
+        const url = `/admin/couponAction/${cId}`
+        let res =  await  fetch(url,{
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        const response = await res.json();
+        console.log(response)
+        if(response.redirect){
+    
+            window.location.href = response.redirect;
+    
+        }
+        
+    } catch (error) {
+        
+    }
+}
+   

@@ -10,7 +10,7 @@ const {getAdmin,adminLogin,adminLogout,adminUsers,
         getSalesReport,downloadProductReport,
         getProductSalesReport,downloadProductSalesExcel,
         downloadPerdaySalesExcel,orderDetails,deliverOrder,categoryOffer,
-        applyCatoffer,viewOrder,approveReturnOrder,setOrderStatus} = require('../controller/admin-controller')
+        applyCatoffer,viewOrder,approveReturnOrder,setOrderStatus,delCoupon,couponAction} = require('../controller/admin-controller')
 
 const {addProduct,editProduct,deleteProduct,removeProduct} = require('../controller/product-controller')
 const {getCategory,getAddCategories,addCategory,deleteCategory} = require('../controller/category-controller')
@@ -57,11 +57,14 @@ router.post('/setOrderStatus',setOrderStatus)
 router.put('/users/block/:_id',adminAuthenticated,blockUser);
 router.delete('/category/delete/:_id',adminAuthenticated,deleteCategory);
 router.delete('/product/delete/:_id',adminAuthenticated,deleteProduct);
+router.delete('/delCoupon/:cId',delCoupon)
+
 router.put('/product/edit/:_id',adminAuthenticated,editProduct);
 router.patch('/product/remove/:_id',adminAuthenticated,removeProduct)
 router.put('/order/deliver/:_id',deliverOrder)
 
 router.put('/approveReturn/:_id',approveReturnOrder)
+router.patch('/couponAction/:cId',couponAction)
 
 
 

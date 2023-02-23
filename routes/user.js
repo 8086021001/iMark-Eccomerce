@@ -10,19 +10,20 @@ const {userLogin,userSignUp,getSignin,getSignup,
     getUserProfile,updateUseraddress,UpdateUserProfile,searchproducts,getNextPage} = require('../controller/user-controller');
 const {addToCart,getCart,cartDelete,cartIncrement,cartDecrement} =require('../controller/cart-controller')
 
+
+router.get('/',getLanding)
 router.get('/signup',getSignup)
 router.get('/signIn',getSignin)
-router.get('/landing',getLanding)
 router.get('/home',userAuthenticated,getHome)
 router.get('/logout',logout)
 router.get('/product/view/:_id',userAuthenticated,getViewProduct)
 router.get('/cart',userAuthenticated,getCart)
-router.get('/product/cart/:_id',addToCart)
+router.get('/product/cart/:_id',userAuthenticated,addToCart)
 router.get('/shop',getShop)
 router.get('/shop/:name',getCatProduct)
 router.get('/featured/:highlights',getFeatured)
-router.get('/user/wallet',getUserWallet)
-router.get('/profile',getUserProfile)
+router.get('/user/wallet',userAuthenticated,getUserWallet)
+router.get('/profile',userAuthenticated,getUserProfile)
 router.get('/search',searchproducts)
 router.get('/shop/next/:num',getNextPage)
 

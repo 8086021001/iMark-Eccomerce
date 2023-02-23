@@ -154,7 +154,6 @@ if(cancelOrder){
 
 async function delOrder(e){
     const orderId = e.target.dataset.url 
-    console.log(orderId)
     const url = `/order/cancel/${orderId}`
     let res =  await  fetch(url,{
         method: 'put',
@@ -178,7 +177,6 @@ async function delOrder(e){
   //Applying coupon
 
   let Cbutton = document.querySelector('#couponButton')
-  console.log(Cbutton)
   if(Cbutton){
     Cbutton.addEventListener('click',async ()=>{
       let couponApplied = document.querySelector('#couponcode').value

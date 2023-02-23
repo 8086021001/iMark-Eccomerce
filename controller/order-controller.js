@@ -11,6 +11,8 @@ const paypal = require("@paypal/checkout-server-sdk");
 const { parse } = require('handlebars');
 require("dotenv").config()
 const moment = require('moment');
+const {ObjectId} = require('MongoDB')
+
 
 
 
@@ -93,9 +95,40 @@ const addAddress= async (req,res)=>{
 const getOrderSuccess = async (req,res)=>{
     try {
         const id= req.session.userId;
-        const orderDetails = await Order.find({user:id}).populate('user').populate('orderItems.proId')
+        const orderDetails = await Order.aggregate([
+                {
+                  $match: { user: ObjectId(id) }
+                },
+                {
+                  $unwind: { path: "$orderItems" }
+                },
+                {
+                  $lookup: {
+                    from: "products",
+                    localField: "orderItems.proId",
+                    foreignField: "_id",
+                    as: "result"
+                  }
+                },
+                {
+                  $unwind: { path: "$result" }
+                },
+                {
+                  $project: {
+                    quantity: "$orderItems.quantity",
+                    paymentMode: "$paymentMode",
+                    total:"$totalAmount",
+                    date:"$createdAt",
+                    isCancelled:"$isCancelled",
+                    isDelivered:"$isDelivered",
+                    returned:"$returned",
+                    inReturn:"$inReturn"
+
+                  }
+                }
+              
+        ])
         const order = orderDetails;
-        // console.log(order);
         if(order){
             res.render('orderSucess',{order: order})
         }else{

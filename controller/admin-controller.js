@@ -6,7 +6,8 @@ const Order = require('../model/order')
 const banner = require('../model/banner')
 const puppeteer = require('puppeteer');
 const XLSX = require('xlsx');
-
+const coupon = require('../model/coupon')
+const {ObjectId} = require('MongoDB')
 
 
 
@@ -616,7 +617,7 @@ const viewOrder =async (req,res)=>{
         {
            $group: {
                 _id:{
-                          resultId: "$result._id",
+                      resultId: "$result._id",
                       productName: "$result.name",
                       productPrice:"$result.price",
                       image:"$result.images",
@@ -727,6 +728,43 @@ const viewOrder =async (req,res)=>{
     }
  }
 
+//delete coupon
+ const delCoupon =async(req,res)=>{
+    try {
+        let couponId =req.params.cId
+        await coupon.findByIdAndDelete(couponId)
+        let redir = "/admin/coupon"
+        res.json({redirect:redir})
+    } catch (error) {
+        console.log(error)
+    }
+ }
+
+//deactivate and activate coupon
+
+const couponAction =async(req,res)=>{
+try {
+    let couponId =req.params.cId
+    let Coupon = await coupon.findById(couponId)
+
+    if(Coupon.isActive){
+        Coupon.isActive = false;
+        await Coupon.save()
+        let red = "/admin/coupon"
+        res.json({redirect:red})
+    }else{
+        Coupon.isActive = true;
+        await Coupon.save()
+        let red = "/admin/coupon"
+        res.json({redirect:red})
+    }
+
+
+} catch (error) {
+    console.log(error)
+}
+}
+
 
 
 
@@ -756,7 +794,9 @@ module.exports = {
     applyCatoffer,
     viewOrder,
     approveReturnOrder,
-    setOrderStatus
+    setOrderStatus,
+    delCoupon,
+    couponAction
     
     
 }
