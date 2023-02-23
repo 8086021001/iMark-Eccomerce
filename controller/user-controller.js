@@ -169,10 +169,10 @@ const userLogin = async(req,res)=>{
         const myuser = await user.find({email: req.body.email})
         console.log(myuser)
         
-        if(myuser.length == 1&&myuser[0].Action){
+        if(myuser.length == 1 && myuser[0].Action){
           req.session.userId = myuser[0]._id;
-          console.log('Hello')
           let isVerified = await bcrypt.compare(req.body.password, myuser[0].password)
+          console.log(myuser[0].password);
           console.log(isVerified)
           if(isVerified){
             res.redirect('/home')

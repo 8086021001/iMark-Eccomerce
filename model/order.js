@@ -29,14 +29,14 @@ const orderSchema = new Schema({
         }
     },
     user: {
-        type:mongoose.SchemaTypes.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref: "user",
         required: true
     },
     orderItems: [
         {
             proId: {
-                type: mongoose.SchemaTypes.ObjectId,
+                type: mongoose.Schema.Types.ObjectId,
                 ref: "product"
             },
             quantity: {
